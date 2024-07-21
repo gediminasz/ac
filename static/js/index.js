@@ -11,9 +11,9 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            documentsDirectory: undefined,
             isLoading: true,
-            isRacing: false,
+            documentsDirectory: undefined,
+            activeEvent: undefined,
         };
     }
 
@@ -43,9 +43,9 @@ class App extends Component {
                         AC Dailies
                     </span>
                 </div>
-                ${this.state.isRacing && html`
+                ${this.state.activeEvent && html`
                     <div class="navbar-text">
-                        <button class="btn btn-primary btn-sm rounded-pill px-5" onclick=${() => processResults({}, this.state.documentsDirectory)}>
+                        <button class="btn btn-primary btn-sm rounded-pill px-5" onclick=${() => this.#refreshResults()}>
                             Race in progress... Click here to refresh results.
                         </button>
                     </div>
@@ -84,7 +84,7 @@ class App extends Component {
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button class="btn btn-success m-1 w-100" onclick=${() => this.#startDemoRace()} disabled=${this.state.isRacing}>Race</button>
+                                <button class="btn btn-success m-1 w-100" onclick=${() => this.#startDemoRace()} disabled=${!!this.state.activeEvent}>Race</button>
                             </div>
                         </div>
                     </div>
@@ -129,8 +129,16 @@ class App extends Component {
             },
             this.state.documentsDirectory,
         );
-        this.setState({ isRacing: true });
+        this.setState({ activeEvent: { category: "oneMake.ks_mazda_mx5_cup" } });
     };
+
+    async #refreshResults() {
+        await processResults(
+            this.state.activeEvent,
+            this.state.documentsDirectory,
+            () => this.setState({ activeEvent: undefined }),
+        );
+    }
 }
 
 render(html`<${App} />`, document.body);
