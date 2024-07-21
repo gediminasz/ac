@@ -11,7 +11,8 @@ class App extends Component {
         super();
         this.state = {
             documentsDirectory: undefined,
-            isLoading: true
+            isLoading: true,
+            isRacing: false,
         };
     }
 
@@ -38,8 +39,16 @@ class App extends Component {
             <div class="container-fluid">
                 <div class="navbar-text">
                     <span class="navbar-brand">
-                        AutoCup (Alpha)
+                        AC Dailies
                     </span>
+                </div>
+                ${this.state.isRacing && html`
+                    <div class="navbar-text">
+                        <button class="btn btn-primary btn-sm rounded-pill px-5">Race in progress... Click here to refresh results.</button>
+                    </div>
+                    `}
+                <div class="navbar-text">
+                    ${(new Date()).toDateString()}
                 </div>
             </div>
         </nav>`;
@@ -51,7 +60,7 @@ class App extends Component {
             <div class="text-center my-5">
                 <p>Please locate the "Assetto Corsa" directory in your Documents folder.</p>
                 <button type="button" class="btn btn-primary btn-lg" onclick=${() => this.#selectDocumentsDirectory()}>Browse...</button>
-            </div>`;
+            </div> `;
         }
 
         return html`
@@ -72,7 +81,7 @@ class App extends Component {
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button class="btn btn-success m-1 w-100" onclick=${() => this.#startDemoRace()}>Race</button>
+                                <button class="btn btn-success m-1 w-100" onclick=${() => this.#startDemoRace()} disabled=${this.state.isRacing}>Race</button>
                             </div>
                         </div>
                     </div>
@@ -117,6 +126,7 @@ class App extends Component {
             },
             this.state.documentsDirectory,
         );
+        this.setState({ isRacing: true });
     };
 }
 
