@@ -1,6 +1,6 @@
 import { Component, render } from 'preact';
 import { html } from 'htm/preact';
-import { get, set, del } from 'idb-keyval';
+import { get, set } from 'idb-keyval';
 
 import { Section, Spinner } from './components/common.js';
 
@@ -24,27 +24,41 @@ class App extends Component {
             return html`<${Spinner} />`;
         }
 
+        return [
+            this.#renderNavBar(),
+            this.#renderBody(),
+        ];
+    }
+
+    #renderNavBar() {
         return html`
-        <div class="container pt-2">
-            ${this.#renderDirectories()}
-        </div >`;
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid">
+                <div class="navbar-text">
+                    <span class="navbar-brand">
+                        AutoCup (Alpha)
+                    </span>
+                </div>
+            </div>
+        </nav>`;
+    }
+
+    #renderBody() {
+        if (!this.state.documentsDirectory) {
+            return this.#renderDirectories();
+        }
     }
 
     #renderDirectories() {
-        return html`<${Section} title="Assetto Coppa (Alpha)">
-            <div class="text-center">
-            <div class="mb-4">
-                <p>
-                    ${this.state.documentsDirectory ? html`Documents Directory: ✅ Valid` : html`Documents Directory: ⚠️ Not Valid`}
-                </p>
-                <button type="button" class="btn btn-primary" onclick=${() => this.#selectDocumentsDirectory()}>Select "Assetto Corsa" directory in Documents</button>
-            </div>
-            </div>
-        <//>`;
+        return html`<div class="text-center my-5">
+            <p>Please locate the "Assetto Corsa" directory in your Documents folder.</p>
+            <button type="button" class="btn btn-primary btn-lg" onclick=${() => this.#selectDocumentsDirectory()}>Browse...</button>
+        </div>`;
     }
 
     async #selectDocumentsDirectory() {
         const documentsDirectory = await window.showDirectoryPicker({ startIn: "documents" });
+        set('acDocumentsDirectory', documentsDirectory);
         await this.#setDocumentsDirectoryState(documentsDirectory);
     }
 
