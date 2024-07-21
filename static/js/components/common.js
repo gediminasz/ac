@@ -11,13 +11,13 @@ export function Section({ title, children }) {
     `;
 }
 
-export function Spinner() {
-    return html`
-    <div class="text-center my-5">
-        <div class="spinner-border"></div>
-    </div>
-    `;
-}
+// export function Spinner() {
+//     return html`
+//     <div class="text-center my-5">
+//         <div class="spinner-border"></div>
+//     </div>
+//     `;
+// }
 
 export function RankBadge({ level }) {
     const title = `AI level: ${level}`;

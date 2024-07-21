@@ -1,33 +1,21 @@
 import { Component, render } from 'preact';
 import { html } from 'htm/preact';
-import { get, set } from 'idb-keyval';
 
-import { Spinner, Section, RankBadge, SubtleBadge } from './components/common.js';
+import { Section, RankBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
 import { OPPONENTS } from './ai.js';
-import { processResults } from './results.js';
+import { processResults, loadHistory } from './results.js';
 
 class App extends Component {
     constructor() {
         super();
         this.state = {
-            isLoading: true,
             documentsDirectory: undefined,
             activeEvent: undefined,
         };
     }
 
-    async componentDidMount() {
-        const documentsDirectory = await get('acDocumentsDirectory');
-        await this.#setDocumentsDirectoryState(documentsDirectory);
-        await this.setState({ isLoading: false });
-    }
-
     render() {
-        if (this.state.isLoading) {
-            return html`<${Spinner} />`;
-        }
-
         return [
             this.#renderNavBar(),
             this.#renderBody(),
@@ -94,14 +82,14 @@ class App extends Component {
     }
 
     async #selectDocumentsDirectory() {
-        const documentsDirectory = await window.showDirectoryPicker({ startIn: "documents" });
-        set('acDocumentsDirectory', documentsDirectory);
+        const documentsDirectory = await window.showDirectoryPicker({ id: "documentsDirectory", startIn: "documents" });
         await this.#setDocumentsDirectoryState(documentsDirectory);
     }
 
     async #setDocumentsDirectoryState(handle) {
         if (handle && handle.name === 'Assetto Corsa') {
             this.setState({ documentsDirectory: handle });
+            await loadHistory(handle);
         } else {
             this.setState({ documentsDirectory: undefined });
         }

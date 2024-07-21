@@ -27,3 +27,15 @@ export async function processResults(event, documentsDirectoryHandle, onSuccess)
         onSuccess();
     });
 }
+
+export async function loadHistory(documentsDirectoryHandle) {
+    const saveFileHandle = await documentsDirectoryHandle.getFileHandle("dailies.jsonl", { create: true });
+    const saveFile = await saveFileHandle.getFile();
+
+    const reader = new FileReader();
+    reader.readAsText(saveFile);
+    reader.addEventListener("load", () => {
+        const results = reader.result.split("\n").filter(Boolean).map(JSON.parse);
+        console.log(results);
+    });
+}
