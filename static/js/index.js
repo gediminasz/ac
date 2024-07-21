@@ -2,7 +2,7 @@ import { Component, render } from 'preact';
 import { html } from 'htm/preact';
 import { get, set } from 'idb-keyval';
 
-import { Spinner } from './components/common.js';
+import { Spinner, Section, RankBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
 
 class App extends Component {
@@ -10,7 +10,7 @@ class App extends Component {
         super();
         this.state = {
             documentsDirectory: undefined,
-            isLoading: true,
+            isLoading: true
         };
     }
 
@@ -50,12 +50,30 @@ class App extends Component {
         }
 
         return html`
-        <div class="container">
-            <div class="text-center my-5">
-                <button type="button" class="btn btn-success btn-lg" onclick=${() => this.#startDemoRace()}>Start Demo Race</button>
-            </div>
-        </div>
-        `;
+        <div class="container my-5">
+            <${Section} title="Daily Races">
+                <div class="row row-cols-3">
+                    <div class="col">
+                        <div class="card text-center shadow h-100">
+                            <div class="card-header">
+                                One Make: Mazda MX5 Cup
+                            </div>
+                            <div class="card-body">
+                                <h5>Silverstone - National</h5>
+                                <div>
+                                    <${RankBadge} level="90" />
+                                    <${SubtleBadge}>2 Laps<//>
+                                    <${SubtleBadge}>16 Drivers<//>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-success m-1 w-100" onclick=${() => this.#startDemoRace()}>Race</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <//>
+        </div>`;
     }
 
     #renderDocumentsDirectorySelector() {
@@ -87,7 +105,7 @@ class App extends Component {
                     track: "ks_silverstone",
                     trackConfiguration: "national",
                     level: 90,
-                    lapCount: 1
+                    lapCount: 2
                 },
                 playerCar: "ks_mazda_mx5_cup",
                 playerSkin: "00_official",
