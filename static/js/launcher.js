@@ -1,5 +1,5 @@
-export async function startRace(documentsDirectoryHandle) {
-    const config = renderRaceIni();
+export async function startRace(options, documentsDirectoryHandle) {
+    const config = renderRaceIni(options);
 
     const cfg = await documentsDirectoryHandle.getDirectoryHandle("cfg");
     const raceIni = await cfg.getFileHandle("race.ini", { create: true });
@@ -11,18 +11,18 @@ export async function startRace(documentsDirectoryHandle) {
     window.open("steam://rungameid/244210/");
 }
 
-function renderRaceIni() {
+function renderRaceIni({ event, playerCar, playerSkin, player, opponents, weather }) {
     return `
 [AUTOSPAWN]
 ACTIVE=1
 
 [RACE]
-TRACK=ks_silverstone
-CONFIG_TRACK=national
-MODEL=ks_mazda_mx5_cup
+TRACK=${event.track}
+CONFIG_TRACK=${event.trackConfiguration}
+MODEL=${playerCar}
 MODEL_CONFIG=
-CARS=10
-AI_LEVEL=98
+CARS=${opponents.length + 1}
+AI_LEVEL=${event.level}
 FIXED_SETUP=0
 PENALTIES=1
 JUMP_START_PENALTY=2
@@ -73,7 +73,7 @@ AMBIENT=26
 ROAD=36
 
 [WEATHER]
-NAME=3_clear
+NAME=${weather}
 
 [BENCHMARK]
 ACTIVE=0
@@ -89,117 +89,38 @@ VERSION=1
 [CAR_0]
 MODEL=-
 MODEL_CONFIG=
-SKIN=00_official
-DRIVER_NAME=Player One
-NATIONALITY=Lithuania
-NATION_CODE=LTU
-
-[CAR_1]
-MODEL=ks_mazda_mx5_cup
-MODEL_CONFIG=
-AI_LEVEL=100
-AI_AGGRESSION=0
-SKIN=01_cup_07
-DRIVER_NAME=Shaw Ellis
+SKIN=${playerSkin}
+DRIVER_NAME=${player.name}
 NATIONALITY=
-NATION_CODE=USA
+NATION_CODE=${player.nationality}
 
-[CAR_2]
-MODEL=ks_mazda_mx5_cup
+${opponents.map((opponent, i) => `
+[CAR_${i + 1}]
+MODEL=${opponent.car}
 MODEL_CONFIG=
-AI_LEVEL=100
-AI_AGGRESSION=0
-SKIN=02_cup_23
-DRIVER_NAME=Kendal Buckley
+AI_LEVEL=${opponent.level}
+AI_AGGRESSION=100
+SKIN=${opponent.skin}
+DRIVER_NAME=${opponent.name}
 NATIONALITY=
-NATION_CODE=AUS
-
-[CAR_3]
-MODEL=ks_mazda_mx5_cup
-MODEL_CONFIG=
-AI_LEVEL=100
-AI_AGGRESSION=0
-SKIN=03_cup_24
-DRIVER_NAME=Jordon Ordonez
-NATIONALITY=
-NATION_CODE=ESP
-
-[CAR_4]
-MODEL=ks_mazda_mx5_cup
-MODEL_CONFIG=
-AI_LEVEL=100
-AI_AGGRESSION=0
-SKIN=04_cup_29
-DRIVER_NAME=Orlando Gallardi
-NATIONALITY=
-NATION_CODE=USA
-
-[CAR_5]
-MODEL=ks_mazda_mx5_cup
-MODEL_CONFIG=
-AI_LEVEL=100
-AI_AGGRESSION=0
-SKIN=05_cup_36
-DRIVER_NAME=Joy Vasquez
-NATIONALITY=
-NATION_CODE=PRT
-
-[CAR_6]
-MODEL=ks_mazda_mx5_cup
-MODEL_CONFIG=
-AI_LEVEL=100
-AI_AGGRESSION=0
-SKIN=06_cup_55
-DRIVER_NAME=Chris Smith
-NATIONALITY=
-NATION_CODE=USA
-
-[CAR_7]
-MODEL=ks_mazda_mx5_cup
-MODEL_CONFIG=
-AI_LEVEL=100
-AI_AGGRESSION=0
-SKIN=07_cup_56
-DRIVER_NAME=Lauren Beaty
-NATIONALITY=
-NATION_CODE=IMN
-
-[CAR_8]
-MODEL=ks_mazda_mx5_cup
-MODEL_CONFIG=
-AI_LEVEL=100
-AI_AGGRESSION=0
-SKIN=08_cup_57
-DRIVER_NAME=Maegan Peter
-NATIONALITY=
-NATION_CODE=DEU
-
-[CAR_9]
-MODEL=ks_mazda_mx5_cup
-MODEL_CONFIG=
-AI_LEVEL=100
-AI_AGGRESSION=0
-SKIN=09_cup_58
-DRIVER_NAME=Bruno Campos
-NATIONALITY=
-NATION_CODE=ESP
+NATION_CODE=${opponent.nationality}`).join("\n")}
 
 [SESSION_0]
 NAME=Practice
 TYPE=1
-DURATION_MINUTES=30
+DURATION_MINUTES=15
 SPAWN_SET=PIT
 
 [SESSION_1]
 NAME=Qualifying
 TYPE=2
-DURATION_MINUTES=10
+DURATION_MINUTES=5
 SPAWN_SET=PIT
 
 [SESSION_2]
 NAME=Race
 TYPE=3
-LAPS=1
+LAPS=${event.lapCount}
 DURATION_MINUTES=0
 SPAWN_SET=START
 `;

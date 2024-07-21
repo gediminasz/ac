@@ -81,7 +81,29 @@ class App extends Component {
     }
 
     async #startDemoRace() {
-        startRace(this.state.documentsDirectory);
+        startRace(
+            {
+                event: {
+                    track: "ks_silverstone",
+                    trackConfiguration: "national",
+                    level: 90,
+                    lapCount: 1
+                },
+                playerCar: "ks_mazda_mx5_cup",
+                playerSkin: "00_official",
+                player: {
+                    name: "Player One",
+                    nationality: "AC",
+                },
+                opponents: [
+                    { car: "ks_mazda_mx5_cup", skin: "00_official", level: 100, name: "Opponent 1", nationality: "AC" },
+                    { car: "ks_mazda_mx5_cup", skin: "00_official", level: 100, name: "Opponent 2", nationality: "AC" },
+                    { car: "ks_mazda_mx5_cup", skin: "00_official", level: 100, name: "Opponent 3", nationality: "AC" },
+                ],
+                weather: "3_clear"
+            },
+            this.state.documentsDirectory,
+        );
     };
 }
 
