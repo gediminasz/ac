@@ -2,7 +2,8 @@ import { Component, render } from 'preact';
 import { html } from 'htm/preact';
 import { get, set } from 'idb-keyval';
 
-import { Section, Spinner } from './components/common.js';
+import { Spinner } from './components/common.js';
+import { startRace } from './launcher.js';
 
 class App extends Component {
     constructor() {
@@ -47,6 +48,14 @@ class App extends Component {
         if (!this.state.documentsDirectory) {
             return this.#renderDocumentsDirectorySelector();
         }
+
+        return html`
+        <div class="container">
+            <div class="text-center my-5">
+                <button type="button" class="btn btn-success btn-lg" onclick=${() => this.#startDemoRace()}>Start Demo Race</button>
+            </div>
+        </div>
+        `;
     }
 
     #renderDocumentsDirectorySelector() {
@@ -70,6 +79,10 @@ class App extends Component {
             this.setState({ documentsDirectory: undefined });
         }
     }
+
+    async #startDemoRace() {
+        startRace(this.state.documentsDirectory);
+    };
 }
 
 render(html`<${App} />`, document.body);
