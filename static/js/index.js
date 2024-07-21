@@ -5,6 +5,7 @@ import { get, set } from 'idb-keyval';
 import { Spinner, Section, RankBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
 import { OPPONENTS } from './ai.js';
+import { processResults } from './results.js';
 
 class App extends Component {
     constructor() {
@@ -44,7 +45,9 @@ class App extends Component {
                 </div>
                 ${this.state.isRacing && html`
                     <div class="navbar-text">
-                        <button class="btn btn-primary btn-sm rounded-pill px-5">Race in progress... Click here to refresh results.</button>
+                        <button class="btn btn-primary btn-sm rounded-pill px-5" onclick=${() => processResults(this.state.documentsDirectory)}>
+                            Race in progress... Click here to refresh results.
+                        </button>
                     </div>
                     `}
                 <div class="navbar-text">
