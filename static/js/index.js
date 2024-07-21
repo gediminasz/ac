@@ -45,7 +45,7 @@ class App extends Component {
                 </div>
                 ${this.state.isRacing && html`
                     <div class="navbar-text">
-                        <button class="btn btn-primary btn-sm rounded-pill px-5" onclick=${() => processResults(this.state.documentsDirectory)}>
+                        <button class="btn btn-primary btn-sm rounded-pill px-5" onclick=${() => processResults({}, this.state.documentsDirectory)}>
                             Race in progress... Click here to refresh results.
                         </button>
                     </div>
