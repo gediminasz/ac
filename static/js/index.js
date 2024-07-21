@@ -45,12 +45,13 @@ class App extends Component {
 
     #renderBody() {
         if (!this.state.documentsDirectory) {
-            return this.#renderDirectories();
+            return this.#renderDocumentsDirectorySelector();
         }
     }
 
-    #renderDirectories() {
-        return html`<div class="text-center my-5">
+    #renderDocumentsDirectorySelector() {
+        return html`
+        <div class="text-center my-5">
             <p>Please locate the "Assetto Corsa" directory in your Documents folder.</p>
             <button type="button" class="btn btn-primary btn-lg" onclick=${() => this.#selectDocumentsDirectory()}>Browse...</button>
         </div>`;
