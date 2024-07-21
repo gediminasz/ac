@@ -4,6 +4,7 @@ import { get, set } from 'idb-keyval';
 
 import { Spinner, Section, RankBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
+import { OPPONENTS } from './ai.js';
 
 class App extends Component {
     constructor() {
@@ -46,7 +47,11 @@ class App extends Component {
 
     #renderBody() {
         if (!this.state.documentsDirectory) {
-            return this.#renderDocumentsDirectorySelector();
+            return html`
+            <div class="text-center my-5">
+                <p>Please locate the "Assetto Corsa" directory in your Documents folder.</p>
+                <button type="button" class="btn btn-primary btn-lg" onclick=${() => this.#selectDocumentsDirectory()}>Browse...</button>
+            </div>`;
         }
 
         return html`
@@ -73,14 +78,6 @@ class App extends Component {
                     </div>
                 </div>
             <//>
-        </div>`;
-    }
-
-    #renderDocumentsDirectorySelector() {
-        return html`
-        <div class="text-center my-5">
-            <p>Please locate the "Assetto Corsa" directory in your Documents folder.</p>
-            <button type="button" class="btn btn-primary btn-lg" onclick=${() => this.#selectDocumentsDirectory()}>Browse...</button>
         </div>`;
     }
 
@@ -113,11 +110,9 @@ class App extends Component {
                     name: "Player One",
                     nationality: "AC",
                 },
-                opponents: [
-                    { car: "ks_mazda_mx5_cup", skin: "00_official", level: 100, name: "Opponent 1", nationality: "AC" },
-                    { car: "ks_mazda_mx5_cup", skin: "00_official", level: 100, name: "Opponent 2", nationality: "AC" },
-                    { car: "ks_mazda_mx5_cup", skin: "00_official", level: 100, name: "Opponent 3", nationality: "AC" },
-                ],
+                opponents: Object.entries(OPPONENTS).slice(0, 15).map(([name, attributes]) => ({
+                    car: "ks_mazda_mx5_cup", skin: "00_official", name, ...attributes
+                })),
                 weather: "3_clear"
             },
             this.state.documentsDirectory,
