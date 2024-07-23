@@ -12,9 +12,8 @@ export async function processResults(event, documentsDirectoryHandle, onSuccess)
             return;
         }
 
-        const gridSize = raceSession.raceResult.length;
         const position = raceSession.raceResult.findIndex(driverId => driverId === 0) + 1;
-        const result = { version: 0, position, gridSize, event };
+        const result = { version: 0, position, event };
 
         console.log("Writing dailies.jsonl");
         const saveFileHandle = await documentsDirectoryHandle.getFileHandle("dailies.jsonl", { create: true });

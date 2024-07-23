@@ -96,16 +96,19 @@ class App extends Component {
     }
 
     async #startDemoRace() {
+        const event = {
+            license: "road",
+            category: "oneMake.ks_mazda_mx5_cup",
+            track: "ks_silverstone",
+            trackConfiguration: "national",
+            car: "ks_mazda_mx5_cup",
+            level: 90,
+            lapCount: 2,
+            gridSize: 16,
+        };
         startRace(
             {
-                event: {
-                    track: "ks_silverstone",
-                    trackConfiguration: "national",
-                    car: "ks_mazda_mx5_cup",
-                    level: 90,
-                    lapCount: 2,
-                    gridSize: 16,
-                },
+                event,
                 playerSkin: "00_official",
                 player: {
                     name: "Player One",
@@ -114,7 +117,7 @@ class App extends Component {
             },
             this.state.documentsDirectory,
         );
-        this.setState({ activeEvent: { category: "oneMake.ks_mazda_mx5_cup" } });
+        this.setState({ activeEvent: event });
     };
 
     async #refreshResults() {
