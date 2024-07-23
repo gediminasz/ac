@@ -110,8 +110,7 @@ class App extends Component {
                 player: {
                     name: "Player One",
                     nationality: "AC",
-                },
-                weather: "3_clear"
+                }
             },
             this.state.documentsDirectory,
         );

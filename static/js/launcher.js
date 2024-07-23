@@ -14,15 +14,15 @@ export async function startRace(options, documentsDirectoryHandle) {
     window.open("steam://rungameid/244210/");
 }
 
-function renderRaceIni({ event, playerSkin, player, weather }) {
+function renderRaceIni({ event, playerSkin, player }) {
     const opponentCount = event.gridSize - 1;
     const opponents = Object.entries(OPPONENTS).slice(0, opponentCount).map(([name, attributes]) => ({
         car: event.car, skin: "00_official", name, ...attributes
     }));
 
-    const generatedAt = new Date().toString();
+    const weather = "3_clear";
 
-    return `; Generated at ${generatedAt}
+    return `; Generated at ${new Date().toString()}
 
 [AUTOSPAWN]
 ACTIVE=1
