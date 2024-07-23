@@ -101,11 +101,11 @@ class App extends Component {
                 event: {
                     track: "ks_silverstone",
                     trackConfiguration: "national",
+                    car: "ks_mazda_mx5_cup",
                     level: 90,
                     lapCount: 2,
                     gridSize: 16,
                 },
-                playerCar: "ks_mazda_mx5_cup",
                 playerSkin: "00_official",
                 player: {
                     name: "Player One",
