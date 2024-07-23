@@ -102,7 +102,8 @@ class App extends Component {
                     track: "ks_silverstone",
                     trackConfiguration: "national",
                     level: 90,
-                    lapCount: 2
+                    lapCount: 2,
+                    gridSize: 16,
                 },
                 playerCar: "ks_mazda_mx5_cup",
                 playerSkin: "00_official",
@@ -110,9 +111,6 @@ class App extends Component {
                     name: "Player One",
                     nationality: "AC",
                 },
-                opponents: Object.entries(OPPONENTS).slice(0, 15).map(([name, attributes]) => ({
-                    car: "ks_mazda_mx5_cup", skin: "00_official", name, ...attributes
-                })),
                 weather: "3_clear"
             },
             this.state.documentsDirectory,

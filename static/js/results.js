@@ -16,6 +16,7 @@ export async function processResults(event, documentsDirectoryHandle, onSuccess)
         const position = raceSession.raceResult.findIndex(driverId => driverId === 0) + 1;
         const result = { version: 0, position, gridSize, event };
 
+        console.log("Writing dailies.jsonl");
         const saveFileHandle = await documentsDirectoryHandle.getFileHandle("dailies.jsonl", { create: true });
         const saveFile = await saveFileHandle.getFile();
 
@@ -29,6 +30,7 @@ export async function processResults(event, documentsDirectoryHandle, onSuccess)
 }
 
 export async function loadHistory(documentsDirectoryHandle) {
+    console.log("Reading dailies.jsonl");
     const saveFileHandle = await documentsDirectoryHandle.getFileHandle("dailies.jsonl", { create: true });
     const saveFile = await saveFileHandle.getFile();
 

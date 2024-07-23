@@ -1,3 +1,5 @@
+import { OPPONENTS } from './ai.js';
+
 export async function startRace(options, documentsDirectoryHandle) {
     const config = renderRaceIni(options);
 
@@ -8,10 +10,16 @@ export async function startRace(options, documentsDirectoryHandle) {
     await writable.write(config);
     await writable.close();
 
-    window.open("steam://rungameid/244210/");
+    console.log("LAUNCHING GAME");
+    // window.open("steam://rungameid/244210/");
 }
 
-function renderRaceIni({ event, playerCar, playerSkin, player, opponents, weather }) {
+function renderRaceIni({ event, playerCar, playerSkin, player, weather }) {
+    const opponentCount = event.gridSize - 1;
+    const opponents = Object.entries(OPPONENTS).slice(0, opponentCount).map(([name, attributes]) => ({
+        car: "ks_mazda_mx5_cup", skin: "00_official", name, ...attributes
+    }));
+
     return `
 [AUTOSPAWN]
 ACTIVE=1
