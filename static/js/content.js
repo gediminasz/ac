@@ -61,10 +61,12 @@ export const EVENT_CATEGORIES = [
 export function generateDailyEvents() {
     return EVENT_CATEGORIES.map((category) => {
         const trackLabel = category.tracks[0];  // TODO track rotation
+        // TODO use track, trackConfiguration from track cache
         const [track, trackConfiguration] = trackLabel.includes("-") ? trackLabel.split("-") : [trackLabel, ""];
         return {
             name: category.name,
             category: category.label,
+            trackLabel,
             track,
             trackConfiguration,
             cars: category.cars,
@@ -72,5 +74,16 @@ export function generateDailyEvents() {
             lapCount: 2,  // TODO calculate based on distance
             gridSize: category.gridSize,
         };
+    });
+}
+
+export async function loadTrackCache(documentsDirectory) {
+    return new Promise(async (resolve) => {
+        const launcherData = await documentsDirectory.getDirectoryHandle("launcherdata");
+        const raceOut = await launcherData.getFileHandle("cache_track.json");
+        const file = await raceOut.getFile();
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.addEventListener("load", async () => resolve(JSON.parse(reader.result)));
     });
 }

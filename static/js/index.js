@@ -1,8 +1,8 @@
 import { Component, render } from 'preact';
 import { html } from 'htm/preact';
 
-import { generateDailyEvents } from './content.js';
-import { processResults, loadHistory } from './results.js';
+import { generateDailyEvents, loadTrackCache } from './content.js';
+import { processResults } from './results.js';
 import { Section, RankBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
 
@@ -10,9 +10,12 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
+            // game data
             documentsDirectory: undefined,
+            trackCache: undefined,
+            // application state
             activeEvent: undefined,
-            dailyEvents: []
+            dailyEvents: [],
         };
     }
 
@@ -75,7 +78,7 @@ class App extends Component {
                 ${event.name}
             </div>
             <div class="card-body">
-                <h5>Silverstone - National</h5>
+                <h5>${this.state.trackCache[event.trackLabel].name}</h5>
                 <div>
                     <${RankBadge} level="${event.level}" />
                     <${SubtleBadge}>${event.lapCount} Laps<//>
@@ -96,7 +99,8 @@ class App extends Component {
     async #setDocumentsDirectoryState(handle) {
         if (handle && handle.name === 'Assetto Corsa') {
             this.setState({ documentsDirectory: handle });
-            this.setState({ dailyEvents: generateDailyEvents() });
+            const trackCache = await loadTrackCache(handle);
+            this.setState({ dailyEvents: generateDailyEvents(), trackCache });
         } else {
             this.setState({ documentsDirectory: undefined });
         }
