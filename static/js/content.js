@@ -63,6 +63,7 @@ export function generateDailyEvents() {
         const trackLabel = category.tracks[0];  // TODO track rotation
         const [track, trackConfiguration] = trackLabel.includes("-") ? trackLabel.split("-") : [trackLabel, ""];
         return {
+            name: category.name,
             category: category.label,
             track,
             trackConfiguration,

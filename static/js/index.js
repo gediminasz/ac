@@ -68,18 +68,18 @@ class App extends Component {
     }
 
     #renderEventCard(event) {
-        // TODO render track name and other details
+        // TODO render track name
         return html`
         <div class="card text-center shadow h-100">
             <div class="card-header">
-                One Make: Mazda MX5 Cup
+                ${event.name}
             </div>
             <div class="card-body">
                 <h5>Silverstone - National</h5>
                 <div>
-                    <${RankBadge} level="90" />
-                    <${SubtleBadge}>2 Laps<//>
-                    <${SubtleBadge}>16 Drivers<//>
+                    <${RankBadge} level="${event.level}" />
+                    <${SubtleBadge}>${event.lapCount} Laps<//>
+                    <${SubtleBadge}>${event.gridSize} Drivers<//>
                 </div>
             </div>
             <div class="card-footer">
