@@ -12,6 +12,17 @@ class App extends Component {
         this.state = {
             documentsDirectory: undefined,
             activeEvent: undefined,
+            dailyEvents: [
+                {
+                    category: "oneMake.ks_mazda_mx5_cup",
+                    track: "ks_silverstone",
+                    trackConfiguration: "national",
+                    car: "ks_mazda_mx5_cup",
+                    level: 90,
+                    lapCount: 2,
+                    gridSize: 16,
+                },
+            ]
         };
     }
 
@@ -50,7 +61,7 @@ class App extends Component {
             return html`
             <div class="text-center my-5">
                 <p>Please locate the "Assetto Corsa" directory in your Documents folder.</p>
-                <button type="button" class="btn btn-primary btn-lg" onclick=${() => this.#selectDocumentsDirectory()}>Browse...</button>
+                <button type="button" class="btn btn-primary btn-lg" onclick=${() => this.#selectDocumentsDirectory()} autofocus>Browse...</button>
             </div> `;
         }
 
@@ -59,25 +70,30 @@ class App extends Component {
             <${Section} title="Daily Races">
                 <div class="row row-cols-3">
                     <div class="col">
-                        <div class="card text-center shadow h-100">
-                            <div class="card-header">
-                                One Make: Mazda MX5 Cup
-                            </div>
-                            <div class="card-body">
-                                <h5>Silverstone - National</h5>
-                                <div>
-                                    <${RankBadge} level="90" />
-                                    <${SubtleBadge}>2 Laps<//>
-                                    <${SubtleBadge}>16 Drivers<//>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <button class="btn btn-success m-1 w-100" onclick=${() => this.#startDemoRace()} disabled=${!!this.state.activeEvent}>Race</button>
-                            </div>
-                        </div>
+                        ${this.state.dailyEvents.map((event) => this.#renderEventCard(event))}
                     </div>
                 </div>
             <//>
+        </div>`;
+    }
+
+    #renderEventCard(event) {
+        return html`
+        <div class="card text-center shadow h-100">
+            <div class="card-header">
+                One Make: Mazda MX5 Cup
+            </div>
+            <div class="card-body">
+                <h5>Silverstone - National</h5>
+                <div>
+                    <${RankBadge} level="90" />
+                    <${SubtleBadge}>2 Laps<//>
+                    <${SubtleBadge}>16 Drivers<//>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-success m-1 w-100" onclick=${() => this.#startEvent(event)} disabled=${!!this.state.activeEvent}>Race</button>
+            </div>
         </div>`;
     }
 
@@ -95,17 +111,7 @@ class App extends Component {
         }
     }
 
-    async #startDemoRace() {
-        const event = {
-            license: "road",
-            category: "oneMake.ks_mazda_mx5_cup",
-            track: "ks_silverstone",
-            trackConfiguration: "national",
-            car: "ks_mazda_mx5_cup",
-            level: 90,
-            lapCount: 2,
-            gridSize: 16,
-        };
+    async #startEvent(event) {
         startRace(
             {
                 event,
