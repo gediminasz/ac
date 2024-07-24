@@ -1,4 +1,4 @@
-export const TRACKS_SPRINT = [
+const TRACKS_SPRINT = [
     // Vanilla:
     // "ks_highlands-layout_short",
     // "ks_laguna_seca",
@@ -8,7 +8,7 @@ export const TRACKS_SPRINT = [
     // TODO add more tracks
 ];
 
-export const EVENT_CATEGORIES = [
+const SERIES = [
     {
         name: "Mazda MX5 Sprint Cup",
         label: "oneMake-ks_mazda_mx5_cup-sprint",
@@ -67,7 +67,7 @@ export const EVENT_CATEGORIES = [
 // };
 
 export function generateDailyEvents() {
-    return EVENT_CATEGORIES.map((category) => {
+    return SERIES.map((category) => {
         const trackLabel = category.tracks[0];  // TODO track rotation
         // TODO use track, trackConfiguration from track cache
         const [track, trackConfiguration] = trackLabel.includes("-") ? trackLabel.split("-") : [trackLabel, ""];
