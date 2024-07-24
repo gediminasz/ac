@@ -11,13 +11,13 @@ export async function startRace(options, documentsDirectoryHandle) {
     await writable.close();
 
     console.log("Launching Assetto Corsa");
-    window.open("steam://rungameid/244210/");
+    // window.open("steam://rungameid/244210/");
 }
 
 function renderRaceIni({ event, playerSkin, player }) {
     const opponentCount = event.gridSize - 1;
     const opponents = Object.entries(OPPONENTS).slice(0, opponentCount).map(([name, attributes]) => ({
-        car: event.car, skin: "00_official", name, ...attributes
+        car: event.cars[0], skin: "00_official", name, ...attributes
     }));
 
     const weather = "3_clear";
@@ -30,7 +30,7 @@ ACTIVE=1
 [RACE]
 TRACK=${event.track}
 CONFIG_TRACK=${event.trackConfiguration}
-MODEL=${event.car}
+MODEL=${event.cars[0]}
 MODEL_CONFIG=
 CARS=${opponents.length + 1}
 AI_LEVEL=${event.level}

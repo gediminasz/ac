@@ -1,10 +1,10 @@
 import { Component, render } from 'preact';
 import { html } from 'htm/preact';
 
+import { generateDailyEvents } from './content.js';
+import { processResults, loadHistory } from './results.js';
 import { Section, RankBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
-import { OPPONENTS } from './ai.js';
-import { processResults, loadHistory } from './results.js';
 
 class App extends Component {
     constructor() {
@@ -12,17 +12,7 @@ class App extends Component {
         this.state = {
             documentsDirectory: undefined,
             activeEvent: undefined,
-            dailyEvents: [
-                {
-                    category: "oneMake.ks_mazda_mx5_cup",
-                    track: "ks_silverstone",
-                    trackConfiguration: "national",
-                    car: "ks_mazda_mx5_cup",
-                    level: 90,
-                    lapCount: 2,
-                    gridSize: 16,
-                },
-            ]
+            dailyEvents: []
         };
     }
 
@@ -78,6 +68,7 @@ class App extends Component {
     }
 
     #renderEventCard(event) {
+        // TODO render track name and other details
         return html`
         <div class="card text-center shadow h-100">
             <div class="card-header">
@@ -105,7 +96,7 @@ class App extends Component {
     async #setDocumentsDirectoryState(handle) {
         if (handle && handle.name === 'Assetto Corsa') {
             this.setState({ documentsDirectory: handle });
-            await loadHistory(handle);
+            this.setState({ dailyEvents: generateDailyEvents() });
         } else {
             this.setState({ documentsDirectory: undefined });
         }
