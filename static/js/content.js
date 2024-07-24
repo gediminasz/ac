@@ -20,7 +20,7 @@ const SERIES = [
     {
         name: "Mazda MX5 Global Series",
         label: "oneMake-ks_mazda_mx5_cup-global",
-        tracks: TRACKS_SPRINT,
+        tracks: TRACKS_SPRINT,  // TODO TRACKS_FULL
         cars: ["ks_mazda_mx5_cup"],
         distance: 30000,
         gridSize: 24,
@@ -69,6 +69,7 @@ const SERIES = [
 export function generateDailyEvents() {
     return SERIES.map((category) => {
         const trackLabel = category.tracks[0];  // TODO track rotation
+        // TODO select only from tracks present in track cache
         // TODO use track, trackConfiguration from track cache
         const [track, trackConfiguration] = trackLabel.includes("-") ? trackLabel.split("-") : [trackLabel, ""];
         return {
