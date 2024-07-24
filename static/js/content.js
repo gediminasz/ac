@@ -16,6 +16,14 @@ export const EVENT_CATEGORIES = [
         cars: ["ks_mazda_mx5_cup"],
         distance: 10000,
         gridSize: 16,
+    },
+    {
+        name: "Mazda MX5 Global Series",
+        label: "oneMake-ks_mazda_mx5_cup-global",
+        tracks: TRACKS_SPRINT,
+        cars: ["ks_mazda_mx5_cup"],
+        distance: 30000,
+        gridSize: 24,
     }
 ];
 

@@ -62,9 +62,7 @@ class App extends Component {
         <div class="container my-5">
             <${Section} title="Daily Races">
                 <div class="row row-cols-3">
-                    <div class="col">
-                        ${this.state.dailyEvents.map((event) => this.#renderEventCard(event))}
-                    </div>
+                    ${this.state.dailyEvents.map((event) => this.#renderEventCard(event))}
                 </div>
             <//>
         </div>`;
@@ -73,20 +71,22 @@ class App extends Component {
     #renderEventCard(event) {
         // TODO render track name
         return html`
-        <div class="card text-center shadow h-100">
-            <div class="card-header">
-                ${event.name}
-            </div>
-            <div class="card-body">
-                <h5>${this.state.trackCache[event.trackLabel].name}</h5>
-                <div>
-                    <${RankBadge} level="${event.level}" />
-                    <${SubtleBadge}>${event.lapCount} Laps<//>
-                    <${SubtleBadge}>${event.gridSize} Drivers<//>
+        <div class="col">
+            <div class="card text-center shadow h-100">
+                <div class="card-header">
+                    ${event.name}
                 </div>
-            </div>
-            <div class="card-footer">
-                <button class="btn btn-success m-1 w-100" onclick=${() => this.#startEvent(event)} disabled=${!!this.state.activeEvent}>Race</button>
+                <div class="card-body">
+                    <h5>${this.state.trackCache[event.trackLabel].name}</h5>
+                    <div>
+                        <${RankBadge} level="${event.level}" />
+                        <${SubtleBadge}>${event.lapCount} Laps<//>
+                        <${SubtleBadge}>${event.gridSize} Drivers<//>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-success m-1 w-100" onclick=${() => this.#startEvent(event)} disabled=${!!this.state.activeEvent}>Race</button>
+                </div>
             </div>
         </div>`;
     }
