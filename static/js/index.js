@@ -69,7 +69,6 @@ class App extends Component {
     }
 
     #renderEventCard(event) {
-        // TODO render track name
         return html`
         <div class="col">
             <div class="card text-center shadow h-100">

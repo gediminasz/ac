@@ -14,6 +14,22 @@ const TRACKS_SPRINT = [
     "ks_red_bull_ring-layout_national"
 ];
 
+const TRACKS_FULL = [
+    // Vanilla:
+    "imola",
+    "ks_laguna_seca",
+    "monza",
+    "mugello",
+    "ks_nurburgring-layout_gp_a",
+    "ks_silverstone-gp",
+    "spa",
+    "ks_vallelunga-extended_circuit",
+    // DLC:
+    "ks_barcelona-layout_moto",
+    "ks_brands_hatch-gp",
+    "ks_red_bull_ring-layout_gp",
+];
+
 const SERIES = [
     {
         name: "Mazda MX5 Sprint Cup",
@@ -26,37 +42,17 @@ const SERIES = [
     {
         name: "Mazda MX5 Global Series",
         label: "oneMake-ks_mazda_mx5_cup-global",
-        tracks: TRACKS_SPRINT,  // TODO TRACKS_FULL
+        tracks: TRACKS_FULL,
         cars: ["ks_mazda_mx5_cup"],
         raceDistance: 30000,
         gridSize: 24,
     }
 ];
 
-// export const TRACK_CATEGORIES = {
-//     fullCourse: {
-//         tracks: [
-//             // Vanilla:
-//             [TRACK_IMOLA, CONFIGURATION_LAYOUT_DEFAULT],
-//             [TRACK_LAGUNA_SECA, CONFIGURATION_LAYOUT_DEFAULT],
-//             [TRACK_MONZA, CONFIGURATION_LAYOUT_DEFAULT],
-//             [TRACK_MUGELLO, CONFIGURATION_LAYOUT_DEFAULT],
-//             [TRACK_NURBURGRING, CONFIGURATION_LAYOUT_GP_A],
-//             [TRACK_SILVERSTONE, CONFIGURATION_GP],
-//             [TRACK_SPA, CONFIGURATION_LAYOUT_DEFAULT],
-//             [TRACK_VALLELUNGA, CONFIGURATION_EXTENDED_CIRCUIT],
-//             // DLC:
-//             [TRACK_BARCELONA, CONFIGURATION_LAYOUT_MOTO],
-//             [TRACK_BRANDS_HATCH, CONFIGURATION_GP],
-//             [TRACK_RED_BULL_RING, CONFIGURATION_LAYOUT_GP],
-//         ],
-//         gridSize: 24,
-//     }
-// };
-
 export function generateDailyEvents(trackCache) {
     return SERIES.map((series) => {
-        const availableTracks = series.tracks.filter(trackId => trackCache.hasOwnProperty(trackId));
+        const availableTracks = series.tracks.filter(trackId => !trackCache[trackId].dlc);
+        console.log({ availableTracks });
         const trackIndex = (new Date()).getDate() % availableTracks.length;
         const trackId = availableTracks[trackIndex];
 
