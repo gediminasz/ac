@@ -1,9 +1,9 @@
 const TRACKS_SPRINT = [
     // Vanilla:
-    // "ks_highlands-layout_short",
-    // "ks_laguna_seca",
-    // "magione",
-    // "ks_monza66-junior",
+    "ks_highlands-layout_short",
+    "ks_laguna_seca",
+    "magione",
+    "ks_monza66-junior",
     "ks_silverstone-national"
     // TODO add more tracks
 ];
@@ -68,8 +68,9 @@ const SERIES = [
 
 export function generateDailyEvents(trackCache) {
     return SERIES.map((series) => {
-        const trackId = series.tracks[0];  // TODO track rotation
-        // TODO select only from tracks present in track cache
+        const availableTracks = series.tracks.filter(trackId => trackCache.hasOwnProperty(trackId));
+        const trackIndex = (new Date()).getDate() % availableTracks.length;
+        const trackId = availableTracks[trackIndex];
 
         const trackLengthStr = trackCache[trackId].length;
         const trackLength = trackLengthStr.includes(".") ? parseFloat(trackLengthStr) * 1000 : parseInt(trackLengthStr, 10);
