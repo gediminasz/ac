@@ -100,7 +100,7 @@ class App extends Component {
         if (handle && handle.name === 'Assetto Corsa') {
             this.setState({ documentsDirectory: handle });
             const trackCache = await loadTrackCache(handle);
-            this.setState({ dailyEvents: generateDailyEvents(), trackCache });
+            this.setState({ dailyEvents: generateDailyEvents(trackCache), trackCache });
         } else {
             this.setState({ documentsDirectory: undefined });
         }

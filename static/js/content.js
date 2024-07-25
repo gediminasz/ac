@@ -14,7 +14,7 @@ const SERIES = [
         label: "oneMake-ks_mazda_mx5_cup-sprint",
         tracks: TRACKS_SPRINT,
         cars: ["ks_mazda_mx5_cup"],
-        distance: 10000,
+        raceDistance: 10000,
         gridSize: 16,
     },
     {
@@ -22,7 +22,7 @@ const SERIES = [
         label: "oneMake-ks_mazda_mx5_cup-global",
         tracks: TRACKS_SPRINT,  // TODO TRACKS_FULL
         cars: ["ks_mazda_mx5_cup"],
-        distance: 30000,
+        raceDistance: 30000,
         gridSize: 24,
     }
 ];
@@ -66,22 +66,27 @@ const SERIES = [
 //     }
 // };
 
-export function generateDailyEvents() {
-    return SERIES.map((category) => {
-        const trackLabel = category.tracks[0];  // TODO track rotation
+export function generateDailyEvents(trackCache) {
+    return SERIES.map((series) => {
+        const trackLabel = series.tracks[0];  // TODO track rotation
         // TODO select only from tracks present in track cache
         // TODO use track, trackConfiguration from track cache
         const [track, trackConfiguration] = trackLabel.includes("-") ? trackLabel.split("-") : [trackLabel, ""];
+
+        const trackLengthStr = trackCache[trackLabel].length;
+        const trackLength = trackLengthStr.includes(".") ? parseFloat(trackLengthStr) * 1000 : parseInt(trackLengthStr, 10);
+        const lapCount = Math.ceil(series.raceDistance / trackLength);
+
         return {
-            name: category.name,
-            category: category.label,
+            name: series.name,
+            series: series.label,
             trackLabel,
             track,
             trackConfiguration,
-            cars: category.cars,
+            cars: series.cars,
             level: 90,  // TODO calculate based on license
-            lapCount: 2,  // TODO calculate based on distance
-            gridSize: category.gridSize,
+            lapCount,
+            gridSize: series.gridSize,
         };
     });
 }
