@@ -32,7 +32,7 @@ class App extends Component {
             <div class="container-fluid">
                 <div class="navbar-text">
                     <span class="navbar-brand">
-                        AC Dailies
+                        Daily Corsa
                     </span>
                 </div>
                 ${this.state.activeEvent && html`
@@ -60,7 +60,7 @@ class App extends Component {
 
         return html`
         <div class="container my-5">
-            <${Section} title="Daily Races">
+            <${Section}>
                 <div class="row row-cols-3">
                     ${this.state.dailyEvents.map((event) => this.#renderEventCard(event))}
                 </div>

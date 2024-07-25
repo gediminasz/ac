@@ -4,8 +4,14 @@ const TRACKS_SPRINT = [
     "ks_laguna_seca",
     "magione",
     "ks_monza66-junior",
-    "ks_silverstone-national"
-    // TODO add more tracks
+    "ks_nurburgring-layout_sprint_b",
+    "ks_silverstone-international",
+    "ks_silverstone-national",
+    "ks_vallelunga-club_circuit",
+    "ks_zandvoort",
+    // DLC:
+    "ks_brands_hatch-gp",
+    "ks_red_bull_ring-layout_national"
 ];
 
 const SERIES = [
@@ -28,24 +34,6 @@ const SERIES = [
 ];
 
 // export const TRACK_CATEGORIES = {
-//     sprint: {
-//         tracks: [
-//             // Vanilla:
-//             [TRACK_HIGHLANDS, CONFIGURATION_LAYOUT_SHORT],
-//             [TRACK_LAGUNA_SECA, CONFIGURATION_LAYOUT_DEFAULT],
-//             [TRACK_MAGIONE, CONFIGURATION_LAYOUT_DEFAULT],
-//             [TRACK_MONZA66, CONFIGURATION_JUNIOR],
-//             [TRACK_NURBURGRING, CONFIGURATION_LAYOUT_SPRINT_B],
-//             [TRACK_SILVERSTONE, CONFIGURATION_INTERNATIONAL],
-//             [TRACK_SILVERSTONE, CONFIGURATION_NATIONAL],
-//             [TRACK_VALLELUNGA, CONFIGURATION_CLUB_CIRCUIT],
-//             [TRACK_ZANDVOORT, CONFIGURATION_LAYOUT_DEFAULT],
-//             // DLC:
-//             [TRACK_BRANDS_HATCH, CONFIGURATION_INDY],
-//             [TRACK_RED_BULL_RING, CONFIGURATION_LAYOUT_NATIONAL],
-//         ],
-//         gridSize: 16,
-//     },
 //     fullCourse: {
 //         tracks: [
 //             // Vanilla:

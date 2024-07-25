@@ -4,7 +4,7 @@ export function Section({ title, children }) {
     return html`
     <div class="card shadow mb-2">
         <div class="card-body">
-            <h5 class="card-title text-center">${title}</h5>
+            ${title && html`<h5 class="card-title text-center">${title}</h5>`}
             ${children}
         </div>
     </div>
