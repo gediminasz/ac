@@ -68,21 +68,19 @@ const SERIES = [
 
 export function generateDailyEvents(trackCache) {
     return SERIES.map((series) => {
-        const trackLabel = series.tracks[0];  // TODO track rotation
+        const trackId = series.tracks[0];  // TODO track rotation
         // TODO select only from tracks present in track cache
-        // TODO use track, trackConfiguration from track cache
-        const [track, trackConfiguration] = trackLabel.includes("-") ? trackLabel.split("-") : [trackLabel, ""];
 
-        const trackLengthStr = trackCache[trackLabel].length;
+        const trackLengthStr = trackCache[trackId].length;
         const trackLength = trackLengthStr.includes(".") ? parseFloat(trackLengthStr) * 1000 : parseInt(trackLengthStr, 10);
         const lapCount = Math.ceil(series.raceDistance / trackLength);
 
         return {
             name: series.name,
             series: series.label,
-            trackLabel,
-            track,
-            trackConfiguration,
+            trackId,
+            track: trackCache[trackId].track,
+            trackConfiguration: trackCache[trackId].configuration,
             cars: series.cars,
             level: 90,  // TODO calculate based on license
             lapCount,

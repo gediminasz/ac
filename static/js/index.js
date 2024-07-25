@@ -77,7 +77,7 @@ class App extends Component {
                     ${event.name}
                 </div>
                 <div class="card-body">
-                    <h5>${this.state.trackCache[event.trackLabel].name}</h5>
+                    <h5>${this.state.trackCache[event.trackId].name}</h5>
                     <div>
                         <${RankBadge} level="${event.level}" />
                         <${SubtleBadge}>${event.lapCount} Laps<//>
