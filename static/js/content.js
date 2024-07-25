@@ -1,3 +1,5 @@
+import { readFile } from "./files.js";
+
 const TRACKS_SPRINT = [
     // Vanilla:
     "ks_highlands-layout_short",
@@ -30,18 +32,22 @@ const TRACKS_FULL = [
     "ks_red_bull_ring-layout_gp",
 ];
 
+const LICENSE_ROAD = "road";
+
 const SERIES = [
     {
+        id: "oneMake-ks_mazda_mx5_cup-sprint",
         name: "Mazda MX5 Sprint Cup",
-        label: "oneMake-ks_mazda_mx5_cup-sprint",
+        license: LICENSE_ROAD,
         tracks: TRACKS_SPRINT,
         cars: ["ks_mazda_mx5_cup"],
         raceDistance: 10000,
         gridSize: 16,
     },
     {
+        id: "oneMake-ks_mazda_mx5_cup-global",
         name: "Mazda MX5 Global Series",
-        label: "oneMake-ks_mazda_mx5_cup-global",
+        license: LICENSE_ROAD,
         tracks: TRACKS_FULL,
         cars: ["ks_mazda_mx5_cup"],
         raceDistance: 30000,
@@ -52,7 +58,6 @@ const SERIES = [
 export function generateDailyEvents(trackCache) {
     return SERIES.map((series) => {
         const availableTracks = series.tracks.filter(trackId => !trackCache[trackId].dlc);
-        console.log({ availableTracks });
         const trackIndex = (new Date()).getDate() % availableTracks.length;
         const trackId = availableTracks[trackIndex];
 
@@ -61,8 +66,7 @@ export function generateDailyEvents(trackCache) {
         const lapCount = Math.ceil(series.raceDistance / trackLength);
 
         return {
-            name: series.name,
-            series: series.label,
+            series,
             trackId,
             track: trackCache[trackId].track,
             trackConfiguration: trackCache[trackId].configuration,
@@ -75,12 +79,8 @@ export function generateDailyEvents(trackCache) {
 }
 
 export async function loadTrackCache(documentsDirectory) {
-    return new Promise(async (resolve) => {
-        const launcherData = await documentsDirectory.getDirectoryHandle("launcherdata");
-        const raceOut = await launcherData.getFileHandle("cache_track.json");
-        const file = await raceOut.getFile();
-        const reader = new FileReader();
-        reader.readAsText(file);
-        reader.addEventListener("load", async () => resolve(JSON.parse(reader.result)));
-    });
+    const launcherData = await documentsDirectory.getDirectoryHandle("launcherdata");
+    const cacheTrack = await launcherData.getFileHandle("cache_track.json");
+    const data = await readFile(cacheTrack);
+    return JSON.parse(data);
 }

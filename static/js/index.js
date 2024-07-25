@@ -2,7 +2,7 @@ import { Component, render } from 'preact';
 import { html } from 'htm/preact';
 
 import { generateDailyEvents, loadTrackCache } from './content.js';
-import { processResults } from './results.js';
+import { processResults, loadHistory } from './results.js';
 import { Section, RankBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
 
@@ -73,7 +73,7 @@ class App extends Component {
         <div class="col">
             <div class="card text-center shadow h-100">
                 <div class="card-header">
-                    ${event.name}
+                    ${event.series.name}
                 </div>
                 <div class="card-body">
                     <h5>${this.state.trackCache[event.trackId].name}</h5>
@@ -100,6 +100,7 @@ class App extends Component {
             this.setState({ documentsDirectory: handle });
             const trackCache = await loadTrackCache(handle);
             this.setState({ dailyEvents: generateDailyEvents(trackCache), trackCache });
+            loadHistory(handle);
         } else {
             this.setState({ documentsDirectory: undefined });
         }

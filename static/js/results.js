@@ -1,6 +1,10 @@
+import { readFile } from "./files.js";
+
 export async function processResults(event, documentsDirectoryHandle, onSuccess) {
     const outDir = await documentsDirectoryHandle.getDirectoryHandle("out");
     const raceOut = await outDir.getFileHandle("race_out.json");
+
+    // TODO use readFile
 
     const file = await raceOut.getFile();
     const reader = new FileReader();
@@ -29,14 +33,8 @@ export async function processResults(event, documentsDirectoryHandle, onSuccess)
 }
 
 export async function loadHistory(documentsDirectoryHandle) {
-    console.log("Reading dailies.jsonl");
-    const saveFileHandle = await documentsDirectoryHandle.getFileHandle("dailies.jsonl", { create: true });
-    const saveFile = await saveFileHandle.getFile();
-
-    const reader = new FileReader();
-    reader.readAsText(saveFile);
-    reader.addEventListener("load", () => {
-        const results = reader.result.split("\n").filter(Boolean).map(JSON.parse);
-        console.log(results);
-    });
+    const saveFile = await documentsDirectoryHandle.getFileHandle("dailies.jsonl", { create: true });
+    const data = await readFile(saveFile);
+    const results = data.split("\n").filter(Boolean).map(JSON.parse);
+    console.log(results);
 }
