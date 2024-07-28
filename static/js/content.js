@@ -52,6 +52,15 @@ const SERIES = [
         cars: ["ks_mazda_mx5_cup"],
         raceDistance: 30000,
         gridSize: 24,
+    },
+    {
+        id: "oneMake-ks_porsche_911_gt3_cup_2017-global",
+        name: "Porsche 911 GT3 Cup",
+        license: LICENSE_ROAD,
+        tracks: TRACKS_FULL,
+        cars: ["ks_porsche_911_gt3_cup_2017"],
+        raceDistance: 70000,
+        gridSize: 24,
     }
 ];
 
