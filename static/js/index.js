@@ -72,7 +72,7 @@ class App extends Component {
         return html`
         <div class="col">
             <div class="card text-center shadow h-100">
-                <div class="card-header">
+                <div class="card-header" title="${event.uuid}">
                     ${event.series.name}
                 </div>
                 <div class="card-body">

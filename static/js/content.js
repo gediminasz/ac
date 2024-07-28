@@ -66,6 +66,7 @@ export function generateDailyEvents(trackCache) {
         const lapCount = Math.ceil(series.raceDistance / trackLength);
 
         return {
+            uuid: crypto.randomUUID(),
             series,
             trackId,
             track: trackCache[trackId].track,
