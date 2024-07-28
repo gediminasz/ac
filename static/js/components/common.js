@@ -11,26 +11,18 @@ export function Section({ title, children }) {
     `;
 }
 
-// export function Spinner() {
-//     return html`
-//     <div class="text-center my-5">
-//         <div class="spinner-border"></div>
-//     </div>
-//     `;
-// }
-
-export function RankBadge({ level }) {
+export function LicenseBadge({ license: { level, label } }) {
     const title = `AI level: ${level}`;
     if (level === 100) {
-        return html`<span title=${title} class="badge m-1 text-bg-warning">Lv ${level}</span>`;
+        return html`<span title=${title} class="badge m-1 text-bg-warning">${label}</span>`;
     } else if (level >= 95) {
-        return html`<span title=${title} class="badge m-1 text-bg-danger">Lv ${level}</span>`;
+        return html`<span title=${title} class="badge m-1 text-bg-danger">${label}</span>`;
     } else if (level >= 90) {
-        return html`<span title=${title} class="badge m-1 text-bg-success">Lv ${level}</span>`;
+        return html`<span title=${title} class="badge m-1 text-bg-success">${label}</span>`;
     } else if (level >= 85) {
-        return html`<span title=${title} class="badge m-1 text-bg-primary">Lv ${level}</span>`;
+        return html`<span title=${title} class="badge m-1 text-bg-primary">${label}</span>`;
     } else if (level >= 80) {
-        return html`<span title=${title} class="badge m-1 text-bg-secondary">Lv ${level}</span>`;
+        return html`<span title=${title} class="badge m-1 text-bg-secondary">${label}</span>`;
     }
 }
 

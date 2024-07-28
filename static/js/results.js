@@ -40,9 +40,37 @@ export async function processResults(event, documentsDirectoryHandle) {
     return true;
 }
 
-export async function loadHistory(documentsDirectoryHandle) {
+export async function loadLicenses(documentsDirectoryHandle) {
     const saveFile = await documentsDirectoryHandle.getFileHandle("dailies.jsonl", { create: true });
     const data = await readFile(saveFile);
-    const results = data.split("\n").filter(Boolean).map(JSON.parse);
-    console.log(results);
+    const history = data.split("\n").filter(Boolean).filter(l => !l.startsWith("//")).map(JSON.parse);
+    return {
+        road: makeLicense(history, "road", "R"),
+    };
+}
+
+function makeLicense(history, key, label) {
+    const entries = history.filter((result) => result.license === key);
+    const level = calculateLevel(entries);
+    return { level: Math.round(level), label: `${label}${level.toFixed(1) * 10}` };
+}
+
+function calculateLevel(history) {
+    if (history.length === 0) {
+        return 90;
+    }
+    const levels = [];
+    history.forEach(({ level, position, gridSize }) => {
+        if (position <= 3) {
+            levels.push(level * 1.05);
+        } else if (position > gridSize - 3) {
+            levels.push(level * 0.95);
+        } else {
+            levels.push(level);
+        }
+    });
+    let average = levels.reduce((a, b) => a + b, 0) / levels.length;
+    average = Math.min(average, 100);
+    average = Math.max(average, 80);
+    return average;
 }

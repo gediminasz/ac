@@ -64,7 +64,7 @@ const SERIES = [
     }
 ];
 
-export function generateDailyEvents(trackCache) {
+export function generateDailyEvents(trackCache, licenses) {
     return SERIES.map((series) => {
         const availableTracks = series.tracks.filter(trackId => !trackCache[trackId].dlc);
         const trackIndex = (new Date()).getDate() % availableTracks.length;
@@ -81,7 +81,7 @@ export function generateDailyEvents(trackCache) {
             track: trackCache[trackId].track,
             trackConfiguration: trackCache[trackId].configuration,
             cars: series.cars,
-            level: 90,  // TODO calculate based on license
+            level: licenses[series.license].level,
             lapCount,
             gridSize: series.gridSize,
         };

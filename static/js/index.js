@@ -2,8 +2,8 @@ import { Component, render } from 'preact';
 import { html } from 'htm/preact';
 
 import { generateDailyEvents, loadTrackCache } from './content.js';
-import { processResults, loadHistory } from './results.js';
-import { Section, RankBadge, SubtleBadge } from './components/common.js';
+import { processResults, loadLicenses } from './results.js';
+import { Section, LicenseBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
 
 class App extends Component {
@@ -14,8 +14,9 @@ class App extends Component {
             documentsDirectory: undefined,
             trackCache: undefined,
             // application state
-            activeEvent: undefined,
+            licenses: undefined,
             dailyEvents: [],
+            activeEvent: undefined,  // TODO store in localStorage
         };
     }
 
@@ -78,7 +79,7 @@ class App extends Component {
                 <div class="card-body">
                     <h5>${this.state.trackCache[event.trackId].name}</h5>
                     <div>
-                        <${RankBadge} level="${event.level}" />
+                        <${LicenseBadge} license="${this.state.licenses[event.series.license]}" />
                         <${SubtleBadge}>${event.lapCount} Laps<//>
                         <${SubtleBadge}>${event.gridSize} Drivers<//>
                     </div>
@@ -98,8 +99,9 @@ class App extends Component {
     async #setDocumentsDirectoryState(documentsDirectory) {
         if (documentsDirectory && documentsDirectory.name === 'Assetto Corsa') {
             const trackCache = await loadTrackCache(documentsDirectory);
-            this.setState({ dailyEvents: generateDailyEvents(trackCache), documentsDirectory, trackCache });
-            loadHistory(documentsDirectory);
+            const licenses = await loadLicenses(documentsDirectory);
+            const dailyEvents = generateDailyEvents(trackCache, licenses);
+            this.setState({ dailyEvents, licenses, documentsDirectory, trackCache });
         } else {
             this.setState({ documentsDirectory: undefined });
         }
