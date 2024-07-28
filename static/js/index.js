@@ -95,12 +95,11 @@ class App extends Component {
         await this.#setDocumentsDirectoryState(documentsDirectory);
     }
 
-    async #setDocumentsDirectoryState(handle) {
-        if (handle && handle.name === 'Assetto Corsa') {
-            this.setState({ documentsDirectory: handle });
-            const trackCache = await loadTrackCache(handle);
-            this.setState({ dailyEvents: generateDailyEvents(trackCache), trackCache });
-            loadHistory(handle);
+    async #setDocumentsDirectoryState(documentsDirectory) {
+        if (documentsDirectory && documentsDirectory.name === 'Assetto Corsa') {
+            const trackCache = await loadTrackCache(documentsDirectory);
+            this.setState({ dailyEvents: generateDailyEvents(trackCache), documentsDirectory, trackCache });
+            loadHistory(documentsDirectory);
         } else {
             this.setState({ documentsDirectory: undefined });
         }
@@ -122,11 +121,10 @@ class App extends Component {
     };
 
     async #refreshResults() {
-        await processResults(
-            this.state.activeEvent,
-            this.state.documentsDirectory,
-            () => this.setState({ activeEvent: undefined }),
-        );
+        const success = await processResults(this.state.activeEvent, this.state.documentsDirectory);
+        if (success) {
+            this.setState({ dailyEvents: generateDailyEvents(this.state.trackCache), activeEvent: undefined });
+        }
     }
 }
 

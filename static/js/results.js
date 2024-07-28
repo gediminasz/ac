@@ -1,6 +1,6 @@
 import { readFile } from "./files.js";
 
-export async function processResults(event, documentsDirectoryHandle, onSuccess) {
+export async function processResults(event, documentsDirectoryHandle) {
     const outDir = await documentsDirectoryHandle.getDirectoryHandle("out");
     const raceOut = await outDir.getFileHandle("race_out.json");
 
@@ -8,7 +8,7 @@ export async function processResults(event, documentsDirectoryHandle, onSuccess)
     const eventResult = JSON.parse(data);
     const raceSession = eventResult.sessions.find((session) => session.type === 3);
     if (!raceSession) {
-        return;
+        return false;
     }
 
     const position = raceSession.raceResult.findIndex(driverId => driverId === 0) + 1;
@@ -37,7 +37,7 @@ export async function processResults(event, documentsDirectoryHandle, onSuccess)
     await writable.write(JSON.stringify(result) + "\n");
     await writable.close();
 
-    onSuccess();
+    return true;
 }
 
 export async function loadHistory(documentsDirectoryHandle) {
