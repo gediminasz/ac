@@ -16,6 +16,7 @@ export async function processResults(event, documentsDirectoryHandle) {
     const result = {
         version: 0,
         uuid: event.uuid,
+        date: (new Date()).toISOString(),
 
         level: event.level,
         position,
