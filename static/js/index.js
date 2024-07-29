@@ -128,10 +128,9 @@ class App extends Component {
     async #refreshResults() {
         const success = await processResults(this.state.activeEvent, this.state.documentsDirectory);
         if (success) {
-            this.setState({
-                dailyEvents: generateDailyEvents(this.state.trackCache, this.state.licenses),
-                activeEvent: undefined
-            });
+            const licenses = await loadLicenses(this.state.documentsDirectory);
+            const dailyEvents = generateDailyEvents(this.state.trackCache, licenses);
+            this.setState({ dailyEvents, licenses, activeEvent: undefined });
         }
     }
 }
