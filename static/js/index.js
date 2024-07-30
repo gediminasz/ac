@@ -96,17 +96,11 @@ class App extends Component {
 
     async #selectDocumentsDirectory() {
         const documentsDirectory = await window.showDirectoryPicker({ id: "documentsDirectory", startIn: "documents" });
-        await this.#setDocumentsDirectoryState(documentsDirectory);
-    }
-
-    async #setDocumentsDirectoryState(documentsDirectory) {
         if (documentsDirectory && documentsDirectory.name === 'Assetto Corsa') {
             const trackCache = await loadTrackCache(documentsDirectory);
             const licenses = await loadLicenses(documentsDirectory);
             const dailyEvents = generateDailyEvents(trackCache, licenses);
             this.setState({ dailyEvents, licenses, documentsDirectory, trackCache });
-        } else {
-            this.setState({ documentsDirectory: undefined });
         }
     }
 
