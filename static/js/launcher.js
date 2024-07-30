@@ -14,7 +14,7 @@ export async function startRace(options, documentsDirectoryHandle) {
     window.open("steam://rungameid/244210/");
 }
 
-function renderRaceIni({ event, playerSkin, player }) {
+function renderRaceIni({ event, playerSkin, player, startingPosition }) {
     const opponentCount = event.gridSize - 1;
     const opponents = Object.entries(OPPONENTS).slice(0, opponentCount).map(([name, attributes]) => ({
         car: event.cars[0], skin: "00_official", name, ...attributes
@@ -116,6 +116,15 @@ DRIVER_NAME=${opponent.name}
 NATIONALITY=
 NATION_CODE=${opponent.nationality}`).join("\n")}
 
+${startingPosition ? `
+[SESSION_0]
+STARTING_POSITION=${startingPosition}
+NAME=Race
+TYPE=3
+LAPS=${event.lapCount}
+DURATION_MINUTES=0
+SPAWN_SET=START
+` : `
 [SESSION_0]
 NAME=Practice
 TYPE=1
@@ -134,5 +143,6 @@ TYPE=3
 LAPS=${event.lapCount}
 DURATION_MINUTES=0
 SPAWN_SET=START
+`}
 `;
 }
