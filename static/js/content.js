@@ -64,7 +64,7 @@ const SERIES = [
     }
 ];
 
-export function generateDailyEvents(trackCache, licenses) {
+export function generateDailyEvents(trackCache, licenses, history) {
     return SERIES.map((series) => {
         const availableTracks = series.tracks.filter(trackId => !trackCache[trackId].dlc);
         const trackIndex = (new Date()).getDate() % availableTracks.length;
@@ -73,6 +73,8 @@ export function generateDailyEvents(trackCache, licenses) {
         const trackLengthStr = trackCache[trackId].length;
         const trackLength = trackLengthStr.includes(".") ? parseFloat(trackLengthStr) * 1000 : parseInt(trackLengthStr, 10);
         const lapCount = Math.ceil(series.raceDistance / trackLength);
+
+        const lastResult = history.findLast((result) => result.series === series.id && result.trackId === trackId);
 
         return {
             uuid: crypto.randomUUID(),
@@ -84,6 +86,7 @@ export function generateDailyEvents(trackCache, licenses) {
             level: licenses[series.license].level,
             lapCount,
             gridSize: series.gridSize,
+            lastResult,
         };
     });
 }

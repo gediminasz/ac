@@ -41,10 +41,13 @@ export async function processResults(event, documentsDirectoryHandle) {
     return true;
 }
 
-export async function loadLicenses(documentsDirectoryHandle) {
+export async function loadHistory(documentsDirectoryHandle) {
     const saveFile = await documentsDirectoryHandle.getFileHandle("dailies.jsonl", { create: true });
     const data = await readFile(saveFile);
-    const history = data.split("\n").filter(Boolean).filter(l => !l.startsWith("//")).map(JSON.parse);
+    return data.split("\n").filter(Boolean).filter(l => !l.startsWith("//")).map(JSON.parse);
+}
+
+export async function loadLicenses(history) {
     return {
         road: makeLicense(history, "road", "R"),
     };

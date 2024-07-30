@@ -2,7 +2,7 @@ import { Component, render } from 'preact';
 import { html } from 'htm/preact';
 
 import { generateDailyEvents, loadTrackCache } from './content.js';
-import { processResults, loadLicenses } from './results.js';
+import { processResults, loadLicenses, loadHistory } from './results.js';
 import { Section, LicenseBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
 
@@ -15,6 +15,7 @@ class App extends Component {
             trackCache: undefined,
             // application state
             licenses: undefined,
+            history: [],
             dailyEvents: [],
             activeEvent: undefined,  // TODO store in localStorage
         };
@@ -87,8 +88,16 @@ class App extends Component {
                         <${SubtleBadge}>${event.gridSize} Drivers<//>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <button class="btn btn-success m-1 w-100" onclick=${() => this.#startEvent(event)} disabled=${!!this.state.activeEvent}>Race</button>
+                <div class="card-footer d-flex">
+                    <button class="btn btn-success m-1 flex-grow-1" onclick=${() => this.#startEvent(event)} disabled=${!!this.state.activeEvent}>Race</button>
+                    ${event.lastResult && html`
+                        <button class="btn btn-success m-1" onclick=${() => this.#startEvent(event, event.lastResult.position)} disabled=${!!this.state.activeEvent} title="Skip qualifying and start from P${event.lastResult.position}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fast-forward-fill" viewBox="0 0 16 16">
+                                <path d="M7.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+                                <path d="M15.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C8.713 12.69 8 12.345 8 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+                            </svg>
+                        </button>
+                    `}
                 </div>
             </div>
         </div>`;
@@ -98,13 +107,14 @@ class App extends Component {
         const documentsDirectory = await window.showDirectoryPicker({ id: "documentsDirectory", startIn: "documents" });
         if (documentsDirectory && documentsDirectory.name === 'Assetto Corsa') {
             const trackCache = await loadTrackCache(documentsDirectory);
-            const licenses = await loadLicenses(documentsDirectory);
-            const dailyEvents = generateDailyEvents(trackCache, licenses);
-            this.setState({ dailyEvents, licenses, documentsDirectory, trackCache });
+            const history = await loadHistory(documentsDirectory);
+            const licenses = await loadLicenses(history);
+            const dailyEvents = generateDailyEvents(trackCache, licenses, history);
+            this.setState({ dailyEvents, licenses, documentsDirectory, trackCache, history });
         }
     }
 
-    async #startEvent(event) {
+    async #startEvent(event, startingPosition = undefined) {
         startRace(
             {
                 event,
@@ -112,7 +122,8 @@ class App extends Component {
                 player: {
                     name: "Player One",
                     nationality: "AC",
-                }
+                },
+                startingPosition,
             },
             this.state.documentsDirectory,
         );
@@ -122,9 +133,10 @@ class App extends Component {
     async #refreshResults() {
         const success = await processResults(this.state.activeEvent, this.state.documentsDirectory);
         if (success) {
-            const licenses = await loadLicenses(this.state.documentsDirectory);
-            const dailyEvents = generateDailyEvents(this.state.trackCache, licenses);
-            this.setState({ dailyEvents, licenses, activeEvent: undefined });
+            const history = await loadHistory(this.state.documentsDirectory);
+            const licenses = await loadLicenses(history);
+            const dailyEvents = generateDailyEvents(this.state.trackCache, licenses, history);
+            this.setState({ dailyEvents, licenses, history, activeEvent: undefined });
         }
     }
 }
