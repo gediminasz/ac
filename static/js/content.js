@@ -83,7 +83,7 @@ export function generateDailyEvents(trackCache, licenses, history) {
             track: trackCache[trackId].track,
             trackConfiguration: trackCache[trackId].configuration,
             cars: series.cars,
-            level: licenses[series.license].level,
+            license: licenses[series.license],
             lapCount,
             gridSize: series.gridSize,
             lastResult,

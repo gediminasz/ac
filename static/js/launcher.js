@@ -33,7 +33,7 @@ CONFIG_TRACK=${event.trackConfiguration}
 MODEL=${event.cars[0]}
 MODEL_CONFIG=
 CARS=${opponents.length + 1}
-AI_LEVEL=${Math.round(event.level)}
+AI_LEVEL=${event.license.level}
 FIXED_SETUP=0
 PENALTIES=1
 JUMP_START_PENALTY=2
@@ -119,7 +119,7 @@ NATION_CODE=${opponent.nationality}`).join("\n")}
 ${startingPosition ? `
 [SESSION_0]
 STARTING_POSITION=${startingPosition}
-NAME=Race
+NAME=Race ${event.license.label}
 TYPE=3
 LAPS=${event.lapCount}
 DURATION_MINUTES=0
@@ -138,7 +138,7 @@ DURATION_MINUTES=8
 SPAWN_SET=PIT
 
 [SESSION_2]
-NAME=Race
+NAME=Race ${event.license.label}
 TYPE=3
 LAPS=${event.lapCount}
 DURATION_MINUTES=0

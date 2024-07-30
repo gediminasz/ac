@@ -83,7 +83,7 @@ class App extends Component {
                 <div class="card-body">
                     <h5>${this.state.trackCache[event.trackId].name}</h5>
                     <div>
-                        <${LicenseBadge} license="${this.state.licenses[event.series.license]}" />
+                        <${LicenseBadge} license="${event.license}" />
                         <${SubtleBadge}>${event.lapCount} Laps<//>
                         <${SubtleBadge}>${event.gridSize} Drivers<//>
                     </div>
