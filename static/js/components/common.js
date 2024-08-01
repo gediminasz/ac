@@ -11,18 +11,18 @@ export function Section({ title, children }) {
     `;
 }
 
-export function LicenseBadge({ license: { level, label } }) {
+export function LicenseBadge({ license: { level, badge } }) {
     const title = `AI level: ${level}`;
     if (level === 100) {
-        return html`<span title=${title} class="badge m-1 text-bg-warning">${label}</span>`;
+        return html`<span title=${title} class="badge m-1 text-bg-warning">${badge}</span>`;
     } else if (level >= 95) {
-        return html`<span title=${title} class="badge m-1 text-bg-danger">${label}</span>`;
+        return html`<span title=${title} class="badge m-1 text-bg-danger">${badge}</span>`;
     } else if (level >= 90) {
-        return html`<span title=${title} class="badge m-1 text-bg-success">${label}</span>`;
+        return html`<span title=${title} class="badge m-1 text-bg-success">${badge}</span>`;
     } else if (level >= 85) {
-        return html`<span title=${title} class="badge m-1 text-bg-primary">${label}</span>`;
+        return html`<span title=${title} class="badge m-1 text-bg-primary">${badge}</span>`;
     } else if (level >= 80) {
-        return html`<span title=${title} class="badge m-1 text-bg-secondary">${label}</span>`;
+        return html`<span title=${title} class="badge m-1 text-bg-secondary">${badge}</span>`;
     }
 }
 

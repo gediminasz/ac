@@ -18,7 +18,8 @@ export async function processResults(event, documentsDirectoryHandle) {
         uuid: event.uuid,
         date: (new Date()).toISOString(),
 
-        level: event.level,
+        level: event.license.level,
+        badge: event.license.badge,
         position,
         gridSize: event.gridSize,
 
@@ -53,10 +54,10 @@ export async function loadLicenses(history) {
     };
 }
 
-function makeLicense(history, key, label) {
-    const entries = history.filter((result) => result.license === key);
+function makeLicense(history, name, prefix) {
+    const entries = history.filter((result) => result.level && result.license === name);
     const level = calculateLevel(entries);
-    return { level: Math.round(level), label: `${label}${level.toFixed(1) * 10}` };
+    return { name, level: Math.round(level), badge: `${prefix}${level.toFixed(1) * 10}` };
 }
 
 function calculateLevel(history) {

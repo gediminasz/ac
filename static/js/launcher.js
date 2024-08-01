@@ -119,7 +119,7 @@ NATION_CODE=${opponent.nationality}`).join("\n")}
 ${startingPosition ? `
 [SESSION_0]
 STARTING_POSITION=${startingPosition}
-NAME=Race ${event.license.label}
+NAME=Race ${event.license.badge}
 TYPE=3
 LAPS=${event.lapCount}
 DURATION_MINUTES=0
@@ -138,7 +138,7 @@ DURATION_MINUTES=8
 SPAWN_SET=PIT
 
 [SESSION_2]
-NAME=Race ${event.license.label}
+NAME=Race ${event.license.badge}
 TYPE=3
 LAPS=${event.lapCount}
 DURATION_MINUTES=0
