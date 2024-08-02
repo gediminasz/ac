@@ -39,11 +39,13 @@ class App extends Component {
                 </div>
                 ${this.state.activeEvent && html`
                     <div class="navbar-text">
-                        <button class="btn btn-primary btn-sm rounded-pill px-5" onclick=${() => this.#refreshResults()}>
-                            Race in progress... Click here to refresh results.
+                        <button class="btn btn-primary btn-sm fw-semibold px-5" onclick=${() => this.#refreshResults()}>
+                            ${this.state.activeEvent.series.name} event is in progress... Click here to fetch results.
                         </button>
-                    </div>
-                    `}
+                        <button class="btn btn-secondary btn-sm ms-2" onclick=${() => this.#withdraw()}>
+                            Withdraw
+                        </button>
+                    </div>`}
                 <div class="navbar-text">
                     ${(new Date()).toDateString()}
                 </div>
@@ -60,7 +62,7 @@ class App extends Component {
                     <button type="button" class="btn btn-primary btn-lg" onclick=${() => this.#selectDocumentsDirectory()} autofocus>Browse...</button>
                 </p>
                 <p><small>This app works best on Google Chrome.</small></p>
-            </div> `;
+            </div>`;
         }
 
         return html`
@@ -89,7 +91,7 @@ class App extends Component {
                     </div>
                 </div>
                 <div class="card-footer d-flex">
-                    <button class="btn btn-success m-1 flex-grow-1" onclick=${() => this.#startEvent(event)} disabled=${!!this.state.activeEvent}>Race</button>
+                    <button class="btn btn-success m-1 flex-grow-1 fw-semibold" onclick=${() => this.#startEvent(event)} disabled=${!!this.state.activeEvent}>Race</button>
                     ${event.lastResult && html`
                         <button class="btn btn-success m-1" onclick=${() => this.#startEvent(event, event.lastResult.position)} disabled=${!!this.state.activeEvent} title="Skip qualifying and start from P${event.lastResult.position}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fast-forward-fill" viewBox="0 0 16 16">
@@ -110,7 +112,11 @@ class App extends Component {
             const history = await loadHistory(documentsDirectory);
             const licenses = await loadLicenses(history);
             const dailyEvents = generateDailyEvents(trackCache, licenses, history);
-            this.setState({ dailyEvents, licenses, documentsDirectory, trackCache, history });
+
+            const activeEventJson = window.localStorage.getItem("activeEvent");
+            const activeEvent = activeEventJson ? JSON.parse(activeEventJson) : undefined;
+
+            this.setState({ dailyEvents, licenses, documentsDirectory, trackCache, history, activeEvent });
         }
     }
 
@@ -127,6 +133,7 @@ class App extends Component {
             },
             this.state.documentsDirectory,
         );
+        window.localStorage.setItem("activeEvent", JSON.stringify(event));
         this.setState({ activeEvent: event });
     };
 
@@ -136,7 +143,17 @@ class App extends Component {
             const history = await loadHistory(this.state.documentsDirectory);
             const licenses = await loadLicenses(history);
             const dailyEvents = generateDailyEvents(this.state.trackCache, licenses, history);
+            window.localStorage.removeItem("activeEvent");
             this.setState({ dailyEvents, licenses, history, activeEvent: undefined });
+        } else {
+            alert("Results not available. The event might still be in progress.");
+        }
+    }
+
+    #withdraw() {
+        if (confirm("Are you sure you want to withdraw from this event?")) {
+            window.localStorage.removeItem("activeEvent");
+            this.setState({ activeEvent: undefined });
         }
     }
 }
