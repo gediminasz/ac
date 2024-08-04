@@ -1,7 +1,7 @@
 import { Component, render } from 'preact';
 import { html } from 'htm/preact';
 
-import { generateDailyEvents, loadTrackCache } from './content.js';
+import { generateDailyEvents, loadCache } from './content.js';
 import { processResults, loadLicenses, loadHistory } from './results.js';
 import { Section, LicenseBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
@@ -13,6 +13,7 @@ class App extends Component {
             // game data
             documentsDirectory: undefined,
             trackCache: undefined,
+            carCache: undefined,
             // application state
             licenses: undefined,
             history: [],
@@ -108,7 +109,8 @@ class App extends Component {
     async #selectDocumentsDirectory() {
         const documentsDirectory = await window.showDirectoryPicker({ id: "documentsDirectory", startIn: "documents" });
         if (documentsDirectory && documentsDirectory.name === 'Assetto Corsa') {
-            const trackCache = await loadTrackCache(documentsDirectory);
+            const trackCache = await loadCache(documentsDirectory, "cache_track.json");
+            const carCache = await loadCache(documentsDirectory, "cache_car.json");
             const history = await loadHistory(documentsDirectory);
             const licenses = await loadLicenses(history);
             const dailyEvents = generateDailyEvents(trackCache, licenses, history);
@@ -116,7 +118,7 @@ class App extends Component {
             const activeEventJson = window.localStorage.getItem("activeEvent");
             const activeEvent = activeEventJson ? JSON.parse(activeEventJson) : undefined;
 
-            this.setState({ dailyEvents, licenses, documentsDirectory, trackCache, history, activeEvent });
+            this.setState({ dailyEvents, licenses, documentsDirectory, trackCache, carCache, history, activeEvent });
         }
     }
 
@@ -132,6 +134,7 @@ class App extends Component {
                 startingPosition,
             },
             this.state.documentsDirectory,
+            this.state.carCache,
         );
         window.localStorage.setItem("activeEvent", JSON.stringify(event));
         this.setState({ activeEvent: event });

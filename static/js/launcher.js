@@ -1,7 +1,7 @@
 import { OPPONENTS } from './ai.js';
 
-export async function startRace(options, documentsDirectoryHandle) {
-    const config = renderRaceIni(options);
+export async function startRace(options, documentsDirectoryHandle, carCache) {
+    const config = renderRaceIni(options, carCache);
 
     const cfg = await documentsDirectoryHandle.getDirectoryHandle("cfg");
     const raceIni = await cfg.getFileHandle("race.ini", { create: true });
@@ -14,11 +14,14 @@ export async function startRace(options, documentsDirectoryHandle) {
     window.open("steam://rungameid/244210/");
 }
 
-function renderRaceIni({ event, playerSkin, player, startingPosition }) {
+function renderRaceIni({ event, playerSkin, player, startingPosition }, carCache) {
     const opponentCount = event.gridSize - 1;
-    const opponents = Object.entries(OPPONENTS).slice(0, opponentCount).map(([name, attributes]) => ({
-        car: event.cars[0], skin: "00_official", name, ...attributes
-    }));
+    const opponents = Object.entries(OPPONENTS).slice(0, opponentCount).map(([name, attributes], i) => {
+        const car = event.cars[0];
+        const skinCount = carCache[car].skins.length;
+        const skin = carCache[car].skins[i % skinCount];
+        return { name, car, skin, ...attributes };
+    });
 
     const weather = "3_clear";
 

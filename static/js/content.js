@@ -91,9 +91,9 @@ export function generateDailyEvents(trackCache, licenses, history) {
     });
 }
 
-export async function loadTrackCache(documentsDirectory) {
+export async function loadCache(documentsDirectory, fileName) {
     const launcherData = await documentsDirectory.getDirectoryHandle("launcherdata");
-    const cacheTrack = await launcherData.getFileHandle("cache_track.json");
-    const data = await readFile(cacheTrack);
+    const cache = await launcherData.getFileHandle(fileName);
+    const data = await readFile(cache);
     return JSON.parse(data);
 }
