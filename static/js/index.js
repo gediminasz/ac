@@ -126,7 +126,8 @@ class App extends Component {
         startRace(
             {
                 event,
-                playerSkin: "00_official",
+                playerCar: event.cars[0],
+                playerSkin: this.state.carCache[event.cars[0]].skins[0],
                 player: {
                     name: "Player One",
                     nationality: "AC",

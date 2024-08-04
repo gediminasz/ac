@@ -14,7 +14,7 @@ export async function startRace(options, documentsDirectoryHandle, carCache) {
     window.open("steam://rungameid/244210/");
 }
 
-function renderRaceIni({ event, playerSkin, player, startingPosition }, carCache) {
+function renderRaceIni({ event, playerCar, playerSkin, player, startingPosition }, carCache) {
     const opponentCount = event.gridSize - 1;
     const opponents = Object.entries(OPPONENTS).slice(0, opponentCount).map(([name, attributes], i) => {
         const car = event.cars[0];
@@ -33,7 +33,7 @@ ACTIVE=1
 [RACE]
 TRACK=${event.track}
 CONFIG_TRACK=${event.trackConfiguration}
-MODEL=${event.cars[0]}
+MODEL=${playerCar}
 MODEL_CONFIG=
 CARS=${opponents.length + 1}
 AI_LEVEL=${event.license.level}
