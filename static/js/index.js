@@ -69,7 +69,7 @@ class App extends Component {
         return html`
         <div class="container my-5">
             <${Section}>
-                <div class="row row-cols-3">
+                <div class="row row-cols-3 gx-3 gy-3">
                     ${this.state.dailyEvents.map((event) => this.#renderEventCard(event))}
                 </div>
             <//>

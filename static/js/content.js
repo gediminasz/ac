@@ -45,7 +45,7 @@ const SERIES = [
         gridSize: 16,
     },
     {
-        id: "oneMake-ks_mazda_mx5_cup-global",
+        id: "oneMake-ks_mazda_mx5_cup-full",
         name: "Mazda MX5 Global Series",
         license: LICENSE_ROAD,
         tracks: TRACKS_FULL,
@@ -54,14 +54,23 @@ const SERIES = [
         gridSize: 24,
     },
     {
-        id: "oneMake-ks_porsche_911_gt3_cup_2017-global",
+        id: "oneMake-ks_porsche_911_gt3_cup_2017-full",
         name: "Porsche 911 GT3 Cup",
         license: LICENSE_ROAD,
         tracks: TRACKS_FULL,
         cars: ["ks_porsche_911_gt3_cup_2017"],
         raceDistance: 70000,
         gridSize: 24,
-    }
+    },
+    {
+        id: "oneMake-ks_audi_tt_cup-full",
+        name: "Audi TT Cup",
+        license: LICENSE_ROAD,
+        tracks: TRACKS_FULL,
+        cars: ["ks_audi_tt_cup"],
+        raceDistance: 30000,
+        gridSize: 24,
+    },
 ];
 
 export function generateDailyEvents(trackCache, licenses, history) {
