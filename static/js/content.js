@@ -32,7 +32,9 @@ const TRACKS_FULL = [
     "ks_red_bull_ring-layout_gp",
 ];
 
-const LICENSE_ROAD = "road";
+export const LICENSE_ROAD = "road";
+export const LICENSE_OPEN_WHEEL = "open_wheel";
+export const LICENSE_GT = "gt";
 
 const SERIES = [
     {
@@ -69,6 +71,33 @@ const SERIES = [
         tracks: TRACKS_FULL,
         cars: ["ks_audi_tt_cup"],
         raceDistance: 30000,
+        gridSize: 24,
+    },
+    {
+        id: "oneMake-tatuusfa1-sprint",
+        name: "Formula Rookie",
+        license: LICENSE_OPEN_WHEEL,
+        tracks: TRACKS_SPRINT,
+        cars: ["tatuusfa1"],
+        raceDistance: 30000,
+        gridSize: 16,
+    },
+    {
+        id: "oneMake-tatuusfa1-full",
+        name: "Formula Abarth",
+        license: LICENSE_OPEN_WHEEL,
+        tracks: TRACKS_FULL,
+        cars: ["tatuusfa1"],
+        raceDistance: 70000,
+        gridSize: 24,
+    },
+    {
+        id: "oneMake-ks_lamborghini_huracan_st-full",
+        name: "Huracan Trophy",
+        license: LICENSE_GT,
+        tracks: TRACKS_FULL,
+        cars: ["ks_lamborghini_huracan_st"],
+        raceDistance: 70000,
         gridSize: 24,
     },
 ];

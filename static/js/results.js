@@ -1,4 +1,5 @@
 import { readFile } from "./files.js";
+import { LICENSE_ROAD, LICENSE_OPEN_WHEEL, LICENSE_GT } from "./content.js";
 
 export async function processResults(event, documentsDirectoryHandle) {
     const outDir = await documentsDirectoryHandle.getDirectoryHandle("out");
@@ -50,7 +51,9 @@ export async function loadHistory(documentsDirectoryHandle) {
 
 export async function loadLicenses(history) {
     return {
-        road: makeLicense(history, "road", "R"),
+        [LICENSE_ROAD]: makeLicense(history, LICENSE_ROAD, "R"),
+        [LICENSE_OPEN_WHEEL]: makeLicense(history, LICENSE_OPEN_WHEEL, "OW"),
+        [LICENSE_GT]: makeLicense(history, LICENSE_GT, "GT"),
     };
 }
 

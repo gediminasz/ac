@@ -87,6 +87,7 @@ class App extends Component {
                     <h5>${this.state.trackCache[event.trackId].name}</h5>
                     <div>
                         <${LicenseBadge} license="${event.license}" />
+                        <${SubtleBadge}>${event.series.raceDistance / 1000} km<//>
                         <${SubtleBadge}>${event.lapCount} Laps<//>
                         <${SubtleBadge}>${event.gridSize} Drivers<//>
                     </div>
