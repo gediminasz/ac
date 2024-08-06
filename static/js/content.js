@@ -102,11 +102,13 @@ const SERIES = [
     },
 ];
 
-export function generateDailyEvents(trackCache, licenses, history) {
+export function generateDailyEvents(trackCache, carCache, licenses, history) {
     return SERIES.map((series) => {
         const availableTracks = series.tracks.filter(trackId => !trackCache[trackId].dlc);
         const trackIndex = (new Date()).getDate() % availableTracks.length;
         const trackId = availableTracks[trackIndex];
+
+        const availableCars = series.cars.filter(carId => !carCache[carId].dlc);
 
         const trackLengthStr = trackCache[trackId].length;
         const trackLength = trackLengthStr.includes(".") ? parseFloat(trackLengthStr) * 1000 : parseInt(trackLengthStr, 10);
@@ -120,7 +122,7 @@ export function generateDailyEvents(trackCache, licenses, history) {
             trackId,
             track: trackCache[trackId].track,
             trackConfiguration: trackCache[trackId].configuration,
-            cars: series.cars,
+            cars: availableCars,
             license: licenses[series.license],
             lapCount,
             gridSize: series.gridSize,
