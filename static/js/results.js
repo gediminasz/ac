@@ -1,5 +1,6 @@
 import { readFile } from "./files.js";
 import { LICENSE_ROAD, LICENSE_OPEN_WHEEL, LICENSE_GT } from "./content.js";
+import { SESSION_TYPE_RACE } from "./constants.js";
 
 export async function processResults(event, documentsDirectoryHandle) {
     const outDir = await documentsDirectoryHandle.getDirectoryHandle("out");
@@ -7,11 +8,12 @@ export async function processResults(event, documentsDirectoryHandle) {
 
     const data = await readFile(raceOut);
     const eventResult = JSON.parse(data);
-    const raceSession = eventResult.sessions.find((session) => session.type === 3);
-    if (!raceSession) {
+
+    if (!validateResults(eventResult, event)) {
         return false;
     }
 
+    const raceSession = eventResult.sessions.find((session) => session.type === SESSION_TYPE_RACE);
     const position = raceSession.raceResult.findIndex(driverId => driverId === 0) + 1;
 
     const result = {
@@ -41,6 +43,14 @@ export async function processResults(event, documentsDirectoryHandle) {
     await writable.close();
 
     return true;
+}
+
+function validateResults(results, event) {
+    const trackValid = results.track === event.trackId;
+    const raceSession = results.sessions.find((session) => session.type === SESSION_TYPE_RACE);
+    const lapCountValid = raceSession && raceSession.lapsCount === event.lapCount;
+    const gridSizeValid = results.players.length === event.gridSize;
+    return trackValid && lapCountValid && gridSizeValid;
 }
 
 export async function loadHistory(documentsDirectoryHandle) {

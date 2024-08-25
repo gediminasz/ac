@@ -1,4 +1,5 @@
 import { OPPONENTS } from './ai.js';
+import { SESSION_TYPE_PRACTICE, SESSION_TYPE_QUALIFYING, SESSION_TYPE_RACE } from './constants.js';
 
 export async function startRace(options, documentsDirectoryHandle, carCache) {
     const config = renderRaceIni(options, carCache);
@@ -130,19 +131,19 @@ SPAWN_SET=START
 ` : `
 [SESSION_0]
 NAME=Practice
-TYPE=1
+TYPE=${SESSION_TYPE_PRACTICE}
 DURATION_MINUTES=30
 SPAWN_SET=PIT
 
 [SESSION_1]
 NAME=Qualifying
-TYPE=2
+TYPE=${SESSION_TYPE_QUALIFYING}
 DURATION_MINUTES=8
 SPAWN_SET=PIT
 
 [SESSION_2]
 NAME=Race ${event.license.badge}
-TYPE=3
+TYPE=${SESSION_TYPE_RACE}
 LAPS=${event.lapCount}
 DURATION_MINUTES=0
 SPAWN_SET=START
