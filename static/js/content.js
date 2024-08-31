@@ -36,7 +36,7 @@ export const LICENSE_ROAD = "road";
 export const LICENSE_OPEN_WHEEL = "open_wheel";
 export const LICENSE_GT = "gt";
 
-const SERIES = [
+export const SERIES = [
     {
         id: "oneMake-ks_mazda_mx5_cup-sprint",
         name: "Mazda MX5 Sprint Cup",
