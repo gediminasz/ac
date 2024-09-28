@@ -13,3 +13,9 @@ Use a static file server for development, e.g.:
 ```
 python -m http.server
 ```
+
+## Release
+
+1. Rebase `production` branch on `main`
+1. Push `production` branch
+1. Wait for GitHub Pages to update
