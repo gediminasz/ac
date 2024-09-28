@@ -1,4 +1,12 @@
-# ac
+# Daily Corsa
+
+Streamlined AI racing for Assetto Corsa.
+
+https://gediminasz.github.io/ac/
+
+<img src="./static/img/screenshot.png" />
+
+## Development
 
 Use a static file server for development, e.g.:
 
