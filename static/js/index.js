@@ -59,7 +59,12 @@ class App extends Component {
             return html`
             <div class="text-center my-5">
                 <p>Please locate the "Assetto Corsa" directory in your Documents folder.</p>
-                <p>
+                <p class="my-5">
+                    <img src="./static/img/documents.png" />
+                    <span class="fs-1 mx-3">⇨</span>
+                    <img src="./static/img/assetto-corsa.png" />
+                </p>
+                <p class="my-5">
                     <button type="button" class="btn btn-primary btn-lg" onclick=${() => this.#selectDocumentsDirectory()} autofocus>Browse...</button>
                 </p>
                 <p><small>This app works best on Google Chrome.</small></p>
