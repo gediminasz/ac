@@ -11,18 +11,22 @@ export function Section({ title, children }) {
     `;
 }
 
-export function LicenseBadge({ license: { level, badge } }) {
+export function LicenseBadge({ license: { name, level, badge } }) {
     const title = `AI level: ${level}`;
-    if (level === 100) {
-        return html`<span title=${title} class="badge m-1 text-bg-warning">${badge}</span>`;
-    } else if (level >= 95) {
-        return html`<span title=${title} class="badge m-1 text-bg-danger">${badge}</span>`;
-    } else if (level >= 90) {
-        return html`<span title=${title} class="badge m-1 text-bg-success">${badge}</span>`;
-    } else if (level >= 85) {
-        return html`<span title=${title} class="badge m-1 text-bg-primary">${badge}</span>`;
-    } else if (level >= 80) {
-        return html`<span title=${title} class="badge m-1 text-bg-secondary">${badge}</span>`;
+    const style = getBadgeStyle(name);
+    if (name && level && badge) {
+        return html`<span title=${title} class="badge m-1 ${style}">${badge}</span>`;
+    }
+}
+
+function getBadgeStyle(licenseName) {
+    switch (licenseName) {
+        case "road":
+            return "text-bg-warning";
+        case "open_wheel":
+            return "text-bg-primary";
+        case "gt":
+            return "text-bg-success";
     }
 }
 

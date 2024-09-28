@@ -143,12 +143,12 @@ class App extends Component {
         <//>`;
     }
 
-    #renderHistoryEntry({ date, series, level, badge, position, gridSize, trackId, lapCount, uuid }) {
+    #renderHistoryEntry({ date, series, license, level, badge, position, gridSize, trackId, lapCount, uuid }) {
         const seriesData = SERIES.find((s) => s.id === series);
         return html`<tr>
             <td title="${date}">${date && new Date(date).toDateString()}</td>
             <td>${seriesData ? seriesData.name : series}</td>
-            <td><${LicenseBadge} license="${{ level, badge }}" /></td>
+            <td><${LicenseBadge} license="${{ name: license, level, badge }}" /></td>
             <td>${this.state.trackCache[trackId].name}</td>
             <td>${lapCount}</td>
             <td title="${uuid}">${position} / ${gridSize}</td>
