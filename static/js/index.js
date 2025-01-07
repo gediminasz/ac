@@ -123,23 +123,25 @@ class App extends Component {
     }
 
     #renderHistory() {
-        const mostRecentResults = this.state.history.toReversed().slice(0, 10);
+        const mostRecentResults = this.state.history.toReversed();
         return html`<${Section} title="Race History">
-            <table class="table text-center">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Series</th>
-                        <th>Rank</th>
-                        <th>Track</th>
-                        <th>Laps</th>
-                        <th>Result</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${mostRecentResults.map((result) => this.#renderHistoryEntry(result))}
-                </tbody>
-            </table>
+            <div style="max-height: 25em;" class="overflow-auto">
+                <table class="table text-center">
+                    <thead class="sticky-top">
+                        <tr>
+                            <th>Date</th>
+                            <th>Series</th>
+                            <th>Rank</th>
+                            <th>Track</th>
+                            <th>Laps</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${mostRecentResults.map((result) => this.#renderHistoryEntry(result))}
+                    </tbody>
+                </table>
+            </div>
         <//>`;
     }
 
