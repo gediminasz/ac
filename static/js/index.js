@@ -138,6 +138,7 @@ class App extends Component {
                             <th>Date</th>
                             <th>Series</th>
                             <th>Rank</th>
+                            <th>Car</th>
                             <th>Track</th>
                             <th>Laps</th>
                             <th>Result</th>
@@ -151,12 +152,13 @@ class App extends Component {
         <//>`;
     }
 
-    #renderHistoryEntry({ date, series, license, level, badge, position, gridSize, trackId, lapCount, uuid }) {
+    #renderHistoryEntry({ date, series, license, level, badge, position, gridSize, trackId, lapCount, carId, uuid }) {
         const seriesData = SERIES.find((s) => s.id === series);
         return html`<tr>
             <td title="${date}">${date && new Date(date).toDateString()}</td>
             <td>${seriesData ? seriesData.name : series}</td>
             <td><${LicenseBadge} license="${{ name: license, level, badge }}" /></td>
+            <td>${carId && this.state.carCache[carId].name}</td>
             <td>${this.state.trackCache[trackId].name}</td>
             <td>${lapCount}</td>
             <td title="${uuid}">${position} / ${gridSize}</td>

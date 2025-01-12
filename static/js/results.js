@@ -31,6 +31,8 @@ export async function processResults(event, documentsDirectoryHandle) {
 
         trackId: event.trackId,
         lapCount: event.lapCount,
+
+        carId: eventResult.players[0].car,
     };
 
     console.log("Writing dailies.jsonl");
