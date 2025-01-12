@@ -1,11 +1,20 @@
+import * as idb from 'idb-keyval';
+
 import { OPPONENTS } from './ai.js';
 import { SESSION_TYPE_PRACTICE, SESSION_TYPE_QUALIFYING, SESSION_TYPE_RACE } from './constants.js';
 
 export async function startRace(options, documentsDirectoryHandle, carCache) {
     const config = renderRaceIni(options, carCache);
 
-    const cfg = await documentsDirectoryHandle.getDirectoryHandle("cfg");
-    const raceIni = await cfg.getFileHandle("race.ini", { create: true });
+    let raceIni = await idb.get("raceIniHandle");
+    if (raceIni === undefined) {
+        raceIni = await window.showSaveFilePicker({
+            id: "raceIni",
+            startIn: documentsDirectoryHandle,
+            suggestedName: "race.ini",
+        });
+        idb.set("raceIniHandle", raceIni);
+    }
 
     const writable = await raceIni.createWritable();
     await writable.write(config);

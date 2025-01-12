@@ -1,3 +1,4 @@
+import * as idb from 'idb-keyval';
 import { Component, render } from 'preact';
 import { html } from 'htm/preact';
 
@@ -20,6 +21,11 @@ class App extends Component {
             dailyEvents: [],
             activeEvent: undefined,  // TODO store in localStorage
         };
+    }
+
+    async componentDidMount() {
+        const documentsDirectory = await idb.get("documentsDirectoryHandle");
+        this.#loadData(documentsDirectory);
     }
 
     render() {
@@ -159,6 +165,11 @@ class App extends Component {
 
     async #selectDocumentsDirectory() {
         const documentsDirectory = await window.showDirectoryPicker({ id: "documentsDirectory", startIn: "documents" });
+        idb.set("documentsDirectoryHandle", documentsDirectory);
+        this.#loadData(documentsDirectory);
+    }
+
+    async #loadData(documentsDirectory) {
         if (documentsDirectory && documentsDirectory.name === 'Assetto Corsa') {
             const trackCache = await loadCache(documentsDirectory, "cache_track.json");
             const carCache = await loadCache(documentsDirectory, "cache_car.json");
