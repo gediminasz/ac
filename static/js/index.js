@@ -15,11 +15,15 @@ class App extends Component {
             documentsDirectory: undefined,
             trackCache: undefined,
             carCache: undefined,
+
             // application state
             licenses: undefined,
             history: [],
             dailyEvents: [],
-            activeEvent: undefined,  // TODO store in localStorage
+            activeEvent: undefined,
+
+            playerName: undefined,
+            playerNationality: undefined,
         };
     }
 
@@ -52,9 +56,11 @@ class App extends Component {
                         <button class="btn btn-secondary btn-sm ms-2" onclick=${() => this.#withdraw()}>
                             Withdraw
                         </button>
-                    </div>`}
+                    </div>
+                `}
                 <div class="navbar-text">
-                    ${(new Date()).toDateString()}
+                    <${SubtleBadge}>${this.state.playerName}, ${this.state.playerNationality}<//>
+                    <${SubtleBadge}>${(new Date()).toDateString()}<//>
                 </div>
             </div>
         </nav>`;
@@ -78,7 +84,7 @@ class App extends Component {
         }
 
         return html`
-        <div class="container my-5">
+        <div class="container my-3">
             <${Section}>
                 <div class="row row-cols-3 gx-3 gy-3">
                     ${this.state.dailyEvents.map((event) => this.#renderEventCard(event))}
@@ -182,7 +188,10 @@ class App extends Component {
             const activeEventJson = window.localStorage.getItem("activeEvent");
             const activeEvent = activeEventJson ? JSON.parse(activeEventJson) : undefined;
 
-            this.setState({ dailyEvents, licenses, documentsDirectory, trackCache, carCache, history, activeEvent });
+            const playerName = window.localStorage.getItem("playerName") || "Player One";
+            const playerNationality = window.localStorage.getItem("playerNationality") || "AC";
+
+            this.setState({ dailyEvents, licenses, documentsDirectory, trackCache, carCache, history, activeEvent, playerName, playerNationality });
         }
     }
 
@@ -193,8 +202,8 @@ class App extends Component {
                 playerCar: event.cars[0],
                 playerSkin: this.state.carCache[event.cars[0]].skins[0],
                 player: {
-                    name: "Player One",
-                    nationality: "AC",
+                    name: this.state.playerName,
+                    nationality: this.state.playerNationality,
                 },
                 startingPosition,
             },
