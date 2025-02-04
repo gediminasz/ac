@@ -3,27 +3,33 @@ import { Component, render } from 'preact';
 import { html } from 'htm/preact';
 
 import { generateDailyEvents, loadCache, SERIES } from './content.js';
+import { PAGE_HOME, PAGE_SETTINGS } from './constants.js';
 import { processResults, loadLicenses, loadHistory } from './results.js';
 import { Section, LicenseBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
+import Settings from './components/settings.js';
 
 class App extends Component {
     constructor() {
         super();
         this.state = {
+            // app state
+            page: PAGE_HOME,
+
             // game data
             documentsDirectory: undefined,
             trackCache: undefined,
             carCache: undefined,
 
-            // application state
-            licenses: undefined,
-            history: [],
-            dailyEvents: [],
-            activeEvent: undefined,
-
+            // player data
             playerName: undefined,
             playerNationality: undefined,
+            licenses: undefined,
+            history: [],
+
+            // event data
+            dailyEvents: [],
+            activeEvent: undefined,
         };
     }
 
@@ -44,7 +50,7 @@ class App extends Component {
         <nav class="navbar bg-body-tertiary">
             <div class="container-fluid">
                 <div class="navbar-text">
-                    <span class="navbar-brand">
+                    <span class="navbar-brand pointer" onclick=${() => this.setState({ page: PAGE_HOME })}>
                         Daily Corsa
                     </span>
                 </div>
@@ -59,7 +65,9 @@ class App extends Component {
                     </div>
                 `}
                 <div class="navbar-text">
-                    <${SubtleBadge}>${this.state.playerName}, ${this.state.playerNationality}<//>
+                    <span class="pointer" onclick=${() => this.setState({ page: PAGE_SETTINGS })}>
+                        <${SubtleBadge} >${this.state.playerName}, ${this.state.playerNationality}<//>
+                    </span>
                     <${SubtleBadge}>${(new Date()).toDateString()}<//>
                 </div>
             </div>
@@ -83,15 +91,24 @@ class App extends Component {
             </div>`;
         }
 
-        return html`
-        <div class="container my-3">
-            <${Section}>
-                <div class="row row-cols-3 gx-3 gy-3">
-                    ${this.state.dailyEvents.map((event) => this.#renderEventCard(event))}
+        if (this.state.page === PAGE_SETTINGS) {
+            return html`<${Settings}
+                playerName=${this.state.playerName}
+                playerNationality=${this.state.playerNationality}
+                saveSettings=${(settings) => this.#saveSettings(settings)}
+            />`;
+        } else {
+            return html`
+                <div class="container my-3">
+                    <${Section}>
+                        <div class="row row-cols-3 gx-3 gy-3">
+                            ${this.state.dailyEvents.map((event) => this.#renderEventCard(event))}
+                        </div>
+                    <//>
+                    ${this.state.history.length > 0 && this.#renderHistory()}
                 </div>
-            <//>
-            ${this.state.history.length > 0 && this.#renderHistory()}
-        </div>`;
+            `;
+        }
     }
 
     #renderEventCard(event) {
@@ -232,6 +249,13 @@ class App extends Component {
             window.localStorage.removeItem("activeEvent");
             this.setState({ activeEvent: undefined });
         }
+    }
+
+    #saveSettings(newSettings) {
+        console.log("Saving settings", newSettings);
+        window.localStorage.setItem("playerName", newSettings.playerName);
+        window.localStorage.setItem("playerNationality", newSettings.playerNationality);
+        this.setState({ page: PAGE_HOME, ...newSettings });
     }
 }
 
