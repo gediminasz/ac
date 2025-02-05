@@ -63,9 +63,7 @@ export default class Settings extends Component {
                         </select>
                     </div>
                     <div class="col-auto">
-                        <button type="button" class="btn btn-primary" onclick=${() => this.props.saveSettings(this.state)}>
-                            Save
-                        </button>
+                        <button type="button" class="btn btn-primary" onclick=${() => this.#save()}>Save</button>
                     </div>
                 </div>
             </div>
@@ -74,5 +72,11 @@ export default class Settings extends Component {
 
     #onInput(e) {
         this.setState({ [e.target.name]: e.target.value });
+    }
+
+    #save() {
+        const playerName = this.state.playerName.trim() || "Player One";
+        const playerNationality = this.state.playerNationality;
+        this.props.saveSettings({ playerName, playerNationality });
     }
 }
