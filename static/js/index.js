@@ -1,3 +1,5 @@
+"use strict";
+
 import * as idb from 'idb-keyval';
 import { Component, render } from 'preact';
 import { html } from 'htm/preact';
@@ -216,12 +218,7 @@ class App extends Component {
         startRace(
             {
                 event,
-                playerCar: event.cars[0],
-                playerSkin: this.state.carCache[event.cars[0]].skins[0],
-                player: {
-                    name: this.state.playerName,
-                    nationality: this.state.playerNationality,
-                },
+                player: { name: this.state.playerName, nationality: this.state.playerNationality, car: event.cars[0] },
                 startingPosition,
             },
             this.state.documentsDirectory,

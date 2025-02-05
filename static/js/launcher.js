@@ -1,3 +1,5 @@
+"use strict";
+
 import * as idb from 'idb-keyval';
 import * as _ from 'lodash';
 
@@ -25,14 +27,15 @@ export async function startRace(options, documentsDirectoryHandle, carCache) {
     window.open("steam://rungameid/244210/");
 }
 
-function renderRaceIni({ event, playerCar, playerSkin, player, startingPosition }, carCache) {
+function renderRaceIni({ event, player, startingPosition }, carCache) {
     const opponentCount = event.gridSize - 1;
-    const opponents = Object.entries(OPPONENTS).slice(0, opponentCount).map(([name, attributes], i) => {
-        const car = event.cars[0];
-        const skinCount = carCache[car].skins.length;
-        const skin = carCache[car].skins[i % skinCount];
+    const opponents = Object.entries(OPPONENTS).slice(0, opponentCount).map(([name, attributes]) => {
+        const car = pickByName(event.cars, name);
+        const skin = pickByName(carCache[car].skins, name);
         return { name, car, skin, ...attributes };
     });
+
+    const playerSkin = pickByName(carCache[player.car].skins, player.name);
 
     const weather = "3_clear";
 
@@ -44,7 +47,7 @@ ACTIVE=1
 [RACE]
 TRACK=${event.track}
 CONFIG_TRACK=${event.trackConfiguration}
-MODEL=${playerCar}
+MODEL=${player.car}
 MODEL_CONFIG=
 CARS=${opponents.length + 1}
 AI_LEVEL=${event.license.level}
@@ -164,4 +167,10 @@ SPAWN_SET=START
 function noisyLevel(level) {
     const value = level + _.random(-2, +2);
     return _.clamp(value, 95, 105);
+}
+
+function pickByName(choices, name) {
+    const encoder = new TextEncoder();
+    const i = _.sum(encoder.encode(name)) % choices.length;
+    return choices[i];
 }
