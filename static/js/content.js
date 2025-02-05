@@ -39,7 +39,7 @@ export const LICENSE_GT = "gt";
 export const SERIES = [
     {
         id: "oneMake-ks_mazda_mx5_cup-sprint",
-        name: "Mazda MX5 Sprint Cup",
+        name: "Mazda MX5 Cup • Sprint",
         license: LICENSE_ROAD,
         tracks: TRACKS_SPRINT,
         cars: ["ks_mazda_mx5_cup"],
@@ -48,7 +48,7 @@ export const SERIES = [
     },
     {
         id: "oneMake-ks_mazda_mx5_cup-full",
-        name: "Mazda MX5 Global Series",
+        name: "Mazda MX5 Cup • Full Course",
         license: LICENSE_ROAD,
         tracks: TRACKS_FULL,
         cars: ["ks_mazda_mx5_cup"],
@@ -57,16 +57,16 @@ export const SERIES = [
     },
     {
         id: "oneMake-ks_porsche_911_gt3_cup_2017-full",
-        name: "Porsche 911 GT3 Cup",
+        name: "Porsche 911 GT3 Cup • Full Course",
         license: LICENSE_ROAD,
         tracks: TRACKS_FULL,
         cars: ["ks_porsche_911_gt3_cup_2017"],
-        raceDistance: 70000,
+        raceDistance: 50000,
         gridSize: 24,
     },
     {
         id: "oneMake-ks_audi_tt_cup-full",
-        name: "Audi TT Cup",
+        name: "Audi TT Cup • Full Course",
         license: LICENSE_ROAD,
         tracks: TRACKS_FULL,
         cars: ["ks_audi_tt_cup"],
@@ -75,7 +75,7 @@ export const SERIES = [
     },
     {
         id: "oneMake-tatuusfa1-sprint",
-        name: "Formula Rookie",
+        name: "Formula Abarth • Sprint",
         license: LICENSE_OPEN_WHEEL,
         tracks: TRACKS_SPRINT,
         cars: ["tatuusfa1"],
@@ -84,20 +84,20 @@ export const SERIES = [
     },
     {
         id: "oneMake-tatuusfa1-full",
-        name: "Formula Abarth",
+        name: "Formula Abarth • Full Course",
         license: LICENSE_OPEN_WHEEL,
         tracks: TRACKS_FULL,
         cars: ["tatuusfa1"],
-        raceDistance: 70000,
+        raceDistance: 50000,
         gridSize: 24,
     },
     {
         id: "oneMake-ks_lamborghini_huracan_st-full",
-        name: "Huracan Trophy",
+        name: "Super Trofeo • Full Course",
         license: LICENSE_GT,
         tracks: TRACKS_FULL,
         cars: ["ks_lamborghini_huracan_st"],
-        raceDistance: 70000,
+        raceDistance: 50000,
         gridSize: 24,
     },
 ];
