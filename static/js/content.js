@@ -100,6 +100,16 @@ export const SERIES = [
         raceDistance: 50000,
         gridSize: 24,
     },
+    // TODO GT4
+    {
+        id: "oneMake-gt3-full",
+        name: "GT3 • Full Course",
+        license: LICENSE_GT,
+        tracks: TRACKS_FULL,
+        cars: ["bmw_z4_gt3", "ks_audi_r8_lms", "ks_audi_r8_lms_2016"],
+        raceDistance: 50000,
+        gridSize: 24,
+    },
 ];
 
 export function generateDailyEvents(trackCache, carCache, licenses, history) {
