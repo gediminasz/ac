@@ -2,6 +2,7 @@
 
 import { Component } from 'preact';
 import { html } from 'htm/preact';
+import * as _ from 'lodash';
 
 import { LicenseBadge, Section, SubtleBadge } from './common.js';
 
@@ -57,11 +58,11 @@ class EventCard extends Component {
                         </div>
                         <div>
                             <select
-                                class="form-select form-select-sm"
+                                class="form-select form-select-sm text-center"
                                 value=${playerCarId}
                                 onChange=${(e) => this.#selectCar(e.target.value)}
                             >
-                                ${carChoices.map((car) => html`<option value=${car.id}>${car.name}</option>`)}
+                                ${_.sortBy(carChoices, "name").map((car) => html`<option value=${car.id}>${car.name}</option>`)}
                             </select>
                         </div>
                     </div>
