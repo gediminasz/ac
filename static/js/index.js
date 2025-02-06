@@ -9,7 +9,7 @@ import { PAGE_HOME, PAGE_SETTINGS } from './constants.js';
 import { processResults, loadLicenses, loadHistory } from './results.js';
 import { Section, LicenseBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
-import EventCard from './components/event-card.js';
+import Events from './components/events.js';
 import Settings from './components/settings.js';
 
 class App extends Component {
@@ -80,38 +80,41 @@ class App extends Component {
     #renderBody() {
         if (!this.state.documentsDirectory) {
             return html`
-            <div class="text-center my-5">
-                <p>Please locate the "Assetto Corsa" directory in your Documents folder.</p>
-                <p class="my-5">
-                    <img src="./static/img/documents.png" />
-                    <span class="fs-1 mx-3">⇨</span>
-                    <img src="./static/img/assetto-corsa.png" />
-                </p>
-                <p class="my-5">
-                    <button type="button" class="btn btn-primary btn-lg" onclick=${() => this.#selectDocumentsDirectory()} autofocus>Browse...</button>
-                </p>
-                <p><small>This app works best on Google Chrome.</small></p>
-            </div>`;
-        }
-
-        if (this.state.page === PAGE_SETTINGS) {
-            return html`<${Settings}
-                playerName=${this.state.playerName}
-                playerNationality=${this.state.playerNationality}
-                saveSettings=${(settings) => this.#saveSettings(settings)}
-            />`;
-        } else {
-            return html`
-                <div class="container my-3">
-                    <${Section}>
-                        <div class="row row-cols-3 gx-3 gy-3">
-                            ${this.state.dailyEvents.map((event) => html`<${EventCard} event=${event} carCache=${this.state.carCache} trackCache=${this.state.trackCache} startEvent=${(...args) => this.#startEvent(...args)} />`)}
-                        </div>
-                    <//>
-                    ${this.state.history.length > 0 && this.#renderHistory()}
+                <div class="text-center my-5">
+                    <p>Please locate the "Assetto Corsa" directory in your Documents folder.</p>
+                    <p class="my-5">
+                        <img src="./static/img/documents.png" />
+                        <span class="fs-1 mx-3">⇨</span>
+                        <img src="./static/img/assetto-corsa.png" />
+                    </p>
+                    <p class="my-5">
+                        <button type="button" class="btn btn-primary btn-lg" onclick=${() => this.#selectDocumentsDirectory()} autofocus>Browse...</button>
+                    </p>
+                    <p><small>This app works best on Google Chrome.</small></p>
                 </div>
             `;
         }
+
+        if (this.state.page === PAGE_SETTINGS) {
+            return html`
+                <${Settings}
+                    playerName=${this.state.playerName}
+                    playerNationality=${this.state.playerNationality}
+                    saveSettings=${(settings) => this.#saveSettings(settings)}
+                />
+            `;
+        }
+
+        return html`
+            <div class="container my-3">
+                <${Events}
+                    events=${this.state.dailyEvents}
+                    carCache=${this.state.carCache} trackCache=${this.state.trackCache}
+                    startEvent=${(...args) => this.#startEvent(...args)}
+                />
+                ${this.state.history.length > 0 && this.#renderHistory()}
+            </div>
+        `;
     }
 
     #renderHistory() {

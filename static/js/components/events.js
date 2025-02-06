@@ -3,11 +3,28 @@
 import { Component } from 'preact';
 import { html } from 'htm/preact';
 
-import { LicenseBadge, SubtleBadge } from './common.js';
+import { LicenseBadge, Section, SubtleBadge } from './common.js';
 
-export default class EventCard extends Component {
+export default class Events extends Component {
+    render() {
+        const { events, carCache, trackCache, startEvent } = this.props;
+        const eventCards = events.map((event) =>
+            html`<${EventCard} event=${event} carCache=${carCache} trackCache=${trackCache} startEvent=${startEvent}/>`
+        );
+        return html`
+            <${Section}>
+                <div class="row row-cols-3 gx-3 gy-3">
+                    ${eventCards}
+                </div>
+            <//>
+        `;
+    }
+}
+
+class EventCard extends Component {
     constructor({ event, carCache }) {
         super();
+
         const carChoices = Object.values(carCache).filter(({ id }) => event.cars.includes(id));
         const carIds = carChoices.map(({ id }) => id);
         const previousCarId = window.localStorage.getItem(`cache.playerCarChoice.${event.series.id}`);
