@@ -19,3 +19,7 @@ python -m http.server
 1. Rebase `production` branch on `main`
 1. Push `production` branch
 1. Wait for GitHub Pages to update
+
+## External links
+
+- RSR Live Timing data : http://www.radiators-champ.com/RSRLiveTiming/index.php?page=rank
