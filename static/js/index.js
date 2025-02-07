@@ -26,8 +26,8 @@ class App extends Component {
             carCache: undefined,
 
             // player data
-            playerName: undefined,
-            playerNationality: undefined,
+            playerName: undefined,  // TODO remove from state?
+            playerNationality: undefined,  // TODO remove from state?
             licenses: undefined,
             history: [],
 
