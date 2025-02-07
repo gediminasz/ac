@@ -35,7 +35,7 @@ function renderRaceIni({ event, player, startingPosition }, carCache) {
         return { name, car, skin, ...attributes };
     });
 
-    const playerSkin = pickByName(carCache[player.car].skins, player.name);
+    const playerSkin = pickByName(carCache[player.carId].skins, player.name);
 
     const weather = "3_clear";
 
@@ -47,7 +47,7 @@ ACTIVE=1
 [RACE]
 TRACK=${event.track}
 CONFIG_TRACK=${event.trackConfiguration}
-MODEL=${player.car}
+MODEL=${player.carId}
 MODEL_CONFIG=
 CARS=${opponents.length + 1}
 AI_LEVEL=${event.license.level}

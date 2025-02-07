@@ -38,61 +38,28 @@ export const LICENSE_GT = "gt";
 
 export const SERIES = [
     {
-        id: "oneMake-ks_mazda_mx5_cup-sprint",
-        name: "Mazda MX5 Cup • Sprint",
-        license: LICENSE_ROAD,
+        id: "oneMake-sprint",
+        oneMake: true,
+        name: "One Make • Sprint",
+        license: null,
         tracks: TRACKS_SPRINT,
-        cars: ["ks_mazda_mx5_cup"],
-        raceDistance: 10000,
-        gridSize: 16,
-    },
-    {
-        id: "oneMake-ks_mazda_mx5_cup-full",
-        name: "Mazda MX5 Cup • Full Course",
-        license: LICENSE_ROAD,
-        tracks: TRACKS_FULL,
-        cars: ["ks_mazda_mx5_cup"],
-        raceDistance: 30000,
-        gridSize: 24,
-    },
-    {
-        id: "oneMake-ks_audi_tt_cup-full",
-        name: "Audi TT Cup",
-        license: LICENSE_ROAD,
-        tracks: TRACKS_FULL,
-        cars: ["ks_audi_tt_cup"],
-        raceDistance: 30000,
-        gridSize: 24,
-    },
-    {
-        id: "oneMake-ks_porsche_911_gt3_cup_2017-full",
-        name: "Porsche 911 GT3 Cup",
-        license: LICENSE_ROAD,
-        tracks: TRACKS_FULL,
-        cars: ["ks_porsche_911_gt3_cup_2017"],
-        raceDistance: 50000,
-        gridSize: 24,
-    },
-    {
-        id: "oneMake-tatuusfa1-sprint",
-        name: "Formula Abarth • Sprint",
-        license: LICENSE_OPEN_WHEEL,
-        tracks: TRACKS_SPRINT,
-        cars: ["tatuusfa1"],
+        cars: null,
         raceDistance: 30000,
         gridSize: 16,
     },
     {
-        id: "oneMake-tatuusfa1-full",
-        name: "Formula Abarth • Full Course",
-        license: LICENSE_OPEN_WHEEL,
+        id: "oneMake-full",
+        oneMake: true,
+        name: "One Make • Full Course",
+        license: null,
         tracks: TRACKS_FULL,
-        cars: ["tatuusfa1"],
+        cars: null,
         raceDistance: 50000,
         gridSize: 24,
     },
     {
         id: "gt3-full",
+        oneMake: false,
         name: "GT3",
         license: LICENSE_GT,
         tracks: TRACKS_FULL,
@@ -115,6 +82,7 @@ export const SERIES = [
     },
     {
         id: "gt2-full",
+        oneMake: false,
         name: "GT2",
         license: LICENSE_GT,
         tracks: TRACKS_FULL,
@@ -130,6 +98,7 @@ export const SERIES = [
     },
     {
         id: "gt4-full",
+        oneMake: false,
         name: "GT4",
         license: LICENSE_GT,
         tracks: TRACKS_FULL,
@@ -144,24 +113,16 @@ export const SERIES = [
         raceDistance: 50000,
         gridSize: 24,
     },
-    {
-        id: "oneMake-ks_lamborghini_huracan_st-full",
-        name: "Super Trofeo",
-        license: LICENSE_GT,
-        tracks: TRACKS_FULL,
-        cars: ["ks_lamborghini_huracan_st"],
-        raceDistance: 50000,
-        gridSize: 24,
-    },
 ];
 
-export function generateDailyEvents(trackCache, carCache, licenses, history) {
+export function generateDailyEvents(trackCache, carCache, history) {
     return SERIES.map((series) => {
         const availableTracks = series.tracks.filter(trackId => !trackCache[trackId].dlc);
         const trackIndex = (new Date()).getDate() % availableTracks.length;
         const trackId = availableTracks[trackIndex];
 
-        const availableCars = series.cars.filter(carId => !carCache[carId].dlc);
+        const cars = series.cars || Object.keys(carCache);
+        const availableCars = cars.filter(carId => !carCache[carId].dlc);
 
         const trackLengthStr = trackCache[trackId].length;
         const trackLength = trackLengthStr.includes(".") ? parseFloat(trackLengthStr) * 1000 : parseInt(trackLengthStr, 10);
@@ -176,7 +137,6 @@ export function generateDailyEvents(trackCache, carCache, licenses, history) {
             track: trackCache[trackId].track,
             trackConfiguration: trackCache[trackId].configuration,
             cars: availableCars,
-            license: licenses[series.license],
             lapCount,
             gridSize: series.gridSize,
             lastResult,
@@ -189,4 +149,17 @@ export async function loadCache(documentsDirectory, fileName) {
     const cache = await launcherData.getFileHandle(fileName);
     const data = await readFile(cache);
     return JSON.parse(data);
+}
+
+export function licenseForCar(car) {
+    if (car.tags.includes("#GTE-GT3")) {
+        return LICENSE_GT;
+    }
+    if (car.tags.includes("#GT4")) {
+        return LICENSE_GT;
+    }
+    if (car.tags.includes("singleseater")) {
+        return LICENSE_OPEN_WHEEL;
+    }
+    return LICENSE_ROAD;
 }

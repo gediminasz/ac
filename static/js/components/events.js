@@ -5,12 +5,13 @@ import { html } from 'htm/preact';
 import * as _ from 'lodash';
 
 import { LicenseBadge, Section, SubtleBadge } from './common.js';
+import { licenseForCar } from '../content.js';
 
 export default class Events extends Component {
     render() {
-        const { events, carCache, trackCache, startEvent } = this.props;
+        const { events, carCache, trackCache, licenses, startEvent } = this.props;
         const eventCards = events.map((event) =>
-            html`<${EventCard} event=${event} carCache=${carCache} trackCache=${trackCache} startEvent=${startEvent}/>`
+            html`<${EventCard} event=${event} carCache=${carCache} trackCache=${trackCache} licenses=${licenses} startEvent=${startEvent}/>`
         );
         return html`
             <${Section}>
@@ -39,8 +40,13 @@ class EventCard extends Component {
     }
 
     render() {
-        const { event, trackCache } = this.props;
+        const { event, licenses, trackCache, carCache } = this.props;
         const { carChoices, playerCarId } = this.state;
+
+        const licenseKey = event.series.oneMake ? licenseForCar(carCache[playerCarId]) : event.series.license;
+        const license = licenses[licenseKey];
+
+        const cars = event.series.oneMake ? [this.state.playerCarId] : event.cars;
 
         return html`
             <div class="col">
@@ -51,7 +57,7 @@ class EventCard extends Component {
                     <div class="card-body">
                         <h5>${trackCache[event.trackId].name}</h5>
                         <div class="mb-2">
-                            <${LicenseBadge} license="${event.license}" />
+                            <${LicenseBadge} license="${license}" />
                             <${SubtleBadge}>${event.series.raceDistance / 1000} km<//>
                             <${SubtleBadge}>${event.lapCount} Laps<//>
                             <${SubtleBadge}>${event.gridSize} Drivers<//>
@@ -67,7 +73,7 @@ class EventCard extends Component {
                         </div>
                     </div>
                     <div class="card-footer d-flex">
-                        ${this.#renderEventCardFooter(event)}
+                        ${this.#renderEventCardFooter({ ...event, license, cars })}
                     </div>
                 </div>
             </div>

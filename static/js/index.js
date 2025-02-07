@@ -112,6 +112,7 @@ class App extends Component {
                     events=${this.state.dailyEvents}
                     carCache=${this.state.carCache}
                     trackCache=${this.state.trackCache}
+                    licenses=${this.state.licenses}
                     startEvent=${(...args) => this.#startEvent(...args)}
                 />
                 <${History}
@@ -135,7 +136,7 @@ class App extends Component {
             const carCache = await loadCache(documentsDirectory, "cache_car.json");
             const history = await loadHistory(documentsDirectory);
             const licenses = await loadLicenses(history);
-            const dailyEvents = generateDailyEvents(trackCache, carCache, licenses, history);
+            const dailyEvents = generateDailyEvents(trackCache, carCache, history);
 
             const activeEventJson = window.localStorage.getItem("activeEvent");
             const activeEvent = activeEventJson ? JSON.parse(activeEventJson) : undefined;
@@ -151,7 +152,7 @@ class App extends Component {
         startRace(
             {
                 event,
-                player: { name: this.state.playerName, nationality: this.state.playerNationality, car: playerCarId },
+                player: { name: this.state.playerName, nationality: this.state.playerNationality, carId: playerCarId },
                 startingPosition,
             },
             this.state.documentsDirectory,
@@ -166,7 +167,7 @@ class App extends Component {
         if (success) {
             const history = await loadHistory(this.state.documentsDirectory);
             const licenses = await loadLicenses(history);
-            const dailyEvents = generateDailyEvents(this.state.trackCache, this.state.carCache, licenses, history);
+            const dailyEvents = generateDailyEvents(this.state.trackCache, this.state.carCache, history);
             window.localStorage.removeItem("activeEvent");
             this.setState({ dailyEvents, licenses, history, activeEvent: undefined });
         } else {
