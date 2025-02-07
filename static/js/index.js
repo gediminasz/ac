@@ -28,7 +28,7 @@ class App extends Component {
             // player data
             playerName: undefined,  // TODO remove from state?
             playerNationality: undefined,  // TODO remove from state?
-            licenses: undefined,
+            licenses: {},
             history: [],
 
             // event data
@@ -69,8 +69,9 @@ class App extends Component {
                     </div>
                 `}
                 <div class="navbar-text">
+                    ${Object.values(this.state.licenses).map(l => html`<${LicenseBadge} license=${l} />`)}
                     <span class="pointer" onclick=${() => this.setState({ page: PAGE_SETTINGS })}>
-                        <${SubtleBadge} >${this.state.playerName}, ${this.state.playerNationality}<//>
+                    <${SubtleBadge} >${this.state.playerName}, ${this.state.playerNationality}<//>
                     </span>
                     <${SubtleBadge}>${(new Date()).toDateString()}<//>
                 </div>
