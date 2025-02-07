@@ -27,6 +27,7 @@ export async function processResults(event, documentsDirectoryHandle) {
         gridSize: event.gridSize,
 
         series: event.series.id,
+        seriesName: event.series.name,
         license: event.series.license,
 
         trackId: event.trackId,

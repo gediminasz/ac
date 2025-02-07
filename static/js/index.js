@@ -10,6 +10,7 @@ import { processResults, loadLicenses, loadHistory } from './results.js';
 import { Section, LicenseBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
 import Events from './components/events.js';
+import History from './components/history.js';
 import Settings from './components/settings.js';
 
 class App extends Component {
@@ -109,49 +110,17 @@ class App extends Component {
             <div class="container my-3">
                 <${Events}
                     events=${this.state.dailyEvents}
-                    carCache=${this.state.carCache} trackCache=${this.state.trackCache}
+                    carCache=${this.state.carCache}
+                    trackCache=${this.state.trackCache}
                     startEvent=${(...args) => this.#startEvent(...args)}
                 />
-                ${this.state.history.length > 0 && this.#renderHistory()}
+                <${History}
+                    history=${this.state.history}
+                    carCache=${this.state.carCache}
+                    trackCache=${this.state.trackCache}
+                />
             </div>
         `;
-    }
-
-    #renderHistory() {
-        const mostRecentResults = this.state.history.toReversed();
-        return html`<${Section} title="Race History">
-            <div style="max-height: 25em;" class="overflow-auto">
-                <table class="table text-center">
-                    <thead class="sticky-top">
-                        <tr>
-                            <th>Date</th>
-                            <th>Series</th>
-                            <th>Rank</th>
-                            <th>Car</th>
-                            <th>Track</th>
-                            <th>Laps</th>
-                            <th>Result</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${mostRecentResults.map((result) => this.#renderHistoryEntry(result))}
-                    </tbody>
-                </table>
-            </div>
-        <//>`;
-    }
-
-    #renderHistoryEntry({ date, series, license, level, badge, position, gridSize, trackId, lapCount, carId, uuid }) {
-        const seriesData = SERIES.find((s) => s.id === series);
-        return html`<tr>
-            <td title="${date}">${date && new Date(date).toDateString()}</td>
-            <td>${seriesData ? seriesData.name : series}</td>
-            <td><${LicenseBadge} license="${{ name: license, level, badge }}" /></td>
-            <td>${carId && this.state.carCache[carId].name}</td>
-            <td>${this.state.trackCache[trackId].name}</td>
-            <td>${lapCount}</td>
-            <td title="${uuid}">${position} / ${gridSize}</td>
-        </tr>`;
     }
 
     async #selectDocumentsDirectory() {
