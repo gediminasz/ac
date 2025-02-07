@@ -23,3 +23,5 @@ python -m http.server
 ## External links
 
 - RSR Live Timing data : http://www.radiators-champ.com/RSRLiveTiming/index.php?page=rank
+- Assetto Corsa Database: https://assetto-db.com
+- Assetto Corsa Car Summary List: https://www.assettocorsa.net/forum/index.php?threads/assetto-corsa-car-summary-list.36112/
