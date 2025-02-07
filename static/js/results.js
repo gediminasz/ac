@@ -28,7 +28,7 @@ export async function processResults(event, documentsDirectoryHandle) {
 
         series: event.series.id,
         seriesName: event.series.name,
-        license: event.series.license,
+        license: event.license.name,
 
         trackId: event.trackId,
         lapCount: event.lapCount,
