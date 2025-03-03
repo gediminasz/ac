@@ -12,7 +12,7 @@ const TRACKS_SPRINT = [
     "ks_vallelunga-club_circuit",
     "ks_zandvoort",
     // DLC:
-    "ks_brands_hatch-gp",
+    "ks_brands_hatch-indy",
     "ks_red_bull_ring-layout_national"
 ];
 
