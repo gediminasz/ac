@@ -5,7 +5,6 @@ import { html } from 'htm/preact';
 import * as _ from 'lodash';
 
 import { LicenseBadge, Section, SubtleBadge } from './common.js';
-import { licenseForCar } from '../content.js';
 
 export default class Events extends Component {
     render() {
@@ -50,8 +49,8 @@ class EventCard extends Component {
         const { event, licenses, trackCache, carCache } = this.props;
         const { carChoices, playerCarId } = this.state;
 
-        const licenseKey = event.series.oneMake ? licenseForCar(carCache[playerCarId]) : event.series.license;
-        const license = licenses[licenseKey];
+        const licenseId = event.series.oneMake ? carCache[playerCarId]._licenseId : event.series.license;
+        const license = licenses[licenseId];
 
         const cars = event.series.oneMake ? [this.state.playerCarId] : event.cars;
 

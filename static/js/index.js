@@ -4,7 +4,7 @@ import * as idb from 'idb-keyval';
 import { Component, render } from 'preact';
 import { html } from 'htm/preact';
 
-import { generateDailyEvents, loadCache } from './content.js';
+import { generateDailyEvents, loadCache, annotateCarCache } from './content.js';
 import { PAGE_HOME, PAGE_SETTINGS } from './constants.js';
 import { processResults, loadLicenses, loadHistory } from './results.js';
 import { LicenseBadge, SubtleBadge } from './components/common.js';
@@ -144,6 +144,7 @@ class App extends Component {
         if (documentsDirectory && documentsDirectory.name === 'Assetto Corsa') {
             const trackCache = await loadCache(documentsDirectory, "cache_track.json");
             const carCache = await loadCache(documentsDirectory, "cache_car.json");
+            annotateCarCache(carCache);
             const history = await loadHistory(documentsDirectory);
             const licenses = await loadLicenses(history);
             const dailyEvents = generateDailyEvents(trackCache, carCache);

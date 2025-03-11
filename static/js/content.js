@@ -148,7 +148,21 @@ export async function loadCache(documentsDirectory, fileName) {
     return JSON.parse(data);
 }
 
-export function licenseForCar(car) {
+/**
+ * @param {object} carCache
+ * @returns {object}
+ */
+export function annotateCarCache(carCache) {
+    Object.values(carCache).forEach((car) => {
+        car._licenseId = licenseForCar(car);
+    });
+}
+
+/**
+ * @param {object} car
+ * @returns {string}
+ */
+function licenseForCar(car) {
     if (car.tags.includes("#GTE-GT3")) {
         return LICENSE_GT;
     }
