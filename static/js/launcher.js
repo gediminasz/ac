@@ -24,7 +24,7 @@ export async function startRace(options, documentsDirectoryHandle, carCache) {
     await writable.close();
 
     console.log("Launching Assetto Corsa");
-    window.open("steam://rungameid/244210/");
+    window.open("steam://rungameid/244210/", "_self");
 }
 
 function renderRaceIni({ event, player, startingPosition }, carCache) {
