@@ -115,7 +115,7 @@ export const SERIES = [
     },
 ];
 
-export function generateDailyEvents(trackCache, carCache, history) {
+export function generateDailyEvents(trackCache, carCache) {
     return SERIES.map((series) => {
         const availableTracks = series.tracks.filter(trackId => !trackCache[trackId].dlc);
         const trackIndex = (new Date()).getDate() % availableTracks.length;
@@ -128,8 +128,6 @@ export function generateDailyEvents(trackCache, carCache, history) {
         const trackLength = trackLengthStr.includes(".") ? parseFloat(trackLengthStr) * 1000 : parseInt(trackLengthStr, 10);
         const lapCount = Math.ceil(series.raceDistance / trackLength);
 
-        const lastResult = history.findLast((result) => result.series === series.id && result.trackId === trackId);
-
         return {
             uuid: crypto.randomUUID(),
             series,
@@ -139,7 +137,6 @@ export function generateDailyEvents(trackCache, carCache, history) {
             cars: availableCars,
             lapCount,
             gridSize: series.gridSize,
-            lastResult,
         };
     });
 }

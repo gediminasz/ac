@@ -4,10 +4,10 @@ import * as idb from 'idb-keyval';
 import { Component, render } from 'preact';
 import { html } from 'htm/preact';
 
-import { generateDailyEvents, loadCache, SERIES } from './content.js';
+import { generateDailyEvents, loadCache } from './content.js';
 import { PAGE_HOME, PAGE_SETTINGS } from './constants.js';
 import { processResults, loadLicenses, loadHistory } from './results.js';
-import { Section, LicenseBadge, SubtleBadge } from './components/common.js';
+import { LicenseBadge, SubtleBadge } from './components/common.js';
 import { startRace } from './launcher.js';
 import Events from './components/events.js';
 import History from './components/history.js';
@@ -113,6 +113,7 @@ class App extends Component {
                     events=${this.state.dailyEvents}
                     carCache=${this.state.carCache}
                     trackCache=${this.state.trackCache}
+                    history=${this.state.history}
                     licenses=${this.state.licenses}
                     startEvent=${(...args) => this.#startEvent(...args)}
                 />
@@ -145,7 +146,7 @@ class App extends Component {
             const carCache = await loadCache(documentsDirectory, "cache_car.json");
             const history = await loadHistory(documentsDirectory);
             const licenses = await loadLicenses(history);
-            const dailyEvents = generateDailyEvents(trackCache, carCache, history);
+            const dailyEvents = generateDailyEvents(trackCache, carCache);
 
             const activeEventJson = window.localStorage.getItem("activeEvent");
             const activeEvent = activeEventJson ? JSON.parse(activeEventJson) : undefined;
@@ -176,7 +177,7 @@ class App extends Component {
         if (success) {
             const history = await loadHistory(this.state.documentsDirectory);
             const licenses = await loadLicenses(history);
-            const dailyEvents = generateDailyEvents(this.state.trackCache, this.state.carCache, history);
+            const dailyEvents = generateDailyEvents(this.state.trackCache, this.state.carCache);
             window.localStorage.removeItem("activeEvent");
             this.setState({ dailyEvents, licenses, history, activeEvent: undefined });
         } else {

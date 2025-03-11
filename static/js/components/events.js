@@ -9,9 +9,16 @@ import { licenseForCar } from '../content.js';
 
 export default class Events extends Component {
     render() {
-        const { events, carCache, trackCache, licenses, startEvent } = this.props;
+        const { events, carCache, trackCache, history, licenses, startEvent } = this.props;
         const eventCards = events.map((event) =>
-            html`<${EventCard} event=${event} carCache=${carCache} trackCache=${trackCache} licenses=${licenses} startEvent=${startEvent}/>`
+            html`<${EventCard}
+                event=${event}
+                carCache=${carCache}
+                trackCache=${trackCache}
+                history=${history}
+                licenses=${licenses}
+                startEvent=${startEvent}
+            />`
         );
         return html`
             <${Section}>
@@ -85,6 +92,8 @@ class EventCard extends Component {
             return html`<button class="btn btn-secondary m-1 flex-grow-1 fw-semibold" disabled>Content missing</button>`;
         }
 
+        const lastResult = this.props.history.findLast((result) => (result.license === event.license.name) && (result.trackId === event.trackId));
+
         return html`
             <button
                 class="btn btn-success m-1 flex-grow-1 fw-semibold"
@@ -93,12 +102,12 @@ class EventCard extends Component {
             >
                 Race
             </button>
-            ${event.lastResult && html`
+            ${lastResult && html`
                 <button
                     class="btn btn-success m-1"
-                    onclick=${() => this.props.startEvent(event, this.state.playerCarId, event.lastResult.position)}
+                    onclick=${() => this.props.startEvent(event, this.state.playerCarId, lastResult.position)}
                     disabled=${!!this.state.activeEvent}
-                    title="Skip qualifying and start from P${event.lastResult.position}"
+                    title="Skip qualifying and start from P${lastResult.position}"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fast-forward-fill" viewBox="0 0 16 16">
                         <path d="M7.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
