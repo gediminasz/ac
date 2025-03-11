@@ -35,6 +35,11 @@ const TRACKS_FULL = [
 export const LICENSE_ROAD = "road";
 export const LICENSE_OPEN_WHEEL = "open_wheel";
 export const LICENSE_GT = "gt";
+export const LICENSE_NAMES = {
+    [LICENSE_ROAD]: "Road",
+    [LICENSE_OPEN_WHEEL]: "Open Wheel",
+    [LICENSE_GT]: "GT",
+};
 
 export const SERIES = [
     {

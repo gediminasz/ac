@@ -5,6 +5,7 @@ import { html } from 'htm/preact';
 import * as _ from 'lodash';
 
 import { LicenseBadge, Section, SubtleBadge } from './common.js';
+import { LICENSE_NAMES } from '../content.js';
 
 export default class Events extends Component {
     render() {
@@ -54,6 +55,8 @@ class EventCard extends Component {
 
         const cars = event.series.oneMake ? [this.state.playerCarId] : event.cars;
 
+        const carChoicesForLicense = _.groupBy(_.sortBy(carChoices, ["_licenseId", "name"]), "_licenseId");
+
         return html`
             <div class="col">
                 <div class="card text-center shadow h-100">
@@ -70,11 +73,15 @@ class EventCard extends Component {
                         </div>
                         <div>
                             <select
-                                class="form-select form-select-sm text-center"
+                                class="form-select form-select-sm"
                                 value=${playerCarId}
                                 onChange=${(e) => this.#selectCar(e.target.value)}
                             >
-                                ${_.sortBy(carChoices, "name").map((car) => html`<option value=${car.id}>${car.name}</option>`)}
+                                ${Object.entries(carChoicesForLicense).map(([licenseId, carChoices]) => html`
+                                    <optgroup label=${LICENSE_NAMES[licenseId]}>
+                                        ${carChoices.map((car) => html`<option value=${car.id}>${car.name}</option>`)}
+                                    </optgroup>
+                                `)}
                             </select>
                         </div>
                     </div>
