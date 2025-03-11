@@ -126,9 +126,17 @@ class App extends Component {
     }
 
     async #selectDocumentsDirectory() {
-        const documentsDirectory = await window.showDirectoryPicker({ id: "documentsDirectory", startIn: "documents" });
-        idb.set("documentsDirectoryHandle", documentsDirectory);
-        this.#loadData(documentsDirectory);
+        try {
+            const documentsDirectory = await window.showDirectoryPicker({ id: "documentsDirectory", startIn: "documents" });
+            idb.set("documentsDirectoryHandle", documentsDirectory);
+            this.#loadData(documentsDirectory);
+        } catch (e) {
+            if ((e instanceof DOMException) && (e.name === "AbortError")) {
+                console.debug(e.message);
+            } else {
+                throw e;
+            }
+        }
     }
 
     async #loadData(documentsDirectory) {
