@@ -1,16 +1,16 @@
 {
     "name": "Daily Corsa",
-    "start_url": "/",
+    "start_url": ".",
     "display": "standalone",
     "prefer_related_applications": false,
     "icons": [
         {
-            "src": "/static/img/icon-192.png",
+            "src": "./static/img/icon-192.png",
             "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "/static/img/icon-512.png",
+            "src": "./static/img/icon-512.png",
             "type": "image/png",
             "sizes": "512x512"
         }
