@@ -1,6 +1,6 @@
 "use strict";
 
-// import * as idb from 'idb-keyval';
+import * as idb from 'idb-keyval';
 import * as _ from 'lodash';
 
 import { OPPONENTS } from './ai.js';
