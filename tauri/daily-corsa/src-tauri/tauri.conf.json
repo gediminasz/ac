@@ -12,9 +12,9 @@
   "app": {
     "windows": [
       {
-        "title": "daily-corsa",
-        "width": 800,
-        "height": 600
+        "title": "Daily Corsa (desktop alpha)",
+        "width": 1280,
+        "height": 720
       }
     ],
     "security": {
