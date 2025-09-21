@@ -37,10 +37,10 @@ class App extends Component {
         };
     }
 
-    // async componentDidMount() {
-    //     const documentsDirectory = await idb.get("documentsDirectoryHandle");
-    //     this.#loadData(documentsDirectory);
-    // }
+    async componentDidMount() {
+        const documentsDirectory = await idb.get("documentsDirectoryHandle");
+        this.#loadData(documentsDirectory);
+    }
 
     render() {
         return [
